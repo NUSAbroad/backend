@@ -1,6 +1,7 @@
 import express from 'express';
 import { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import { PORT } from './consts';
 
 const app = express();
 app.use(cors());
@@ -10,8 +11,8 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');
 });
 
-app.listen(3000, () => {
-  console.log(`Express server is listening on 3000`);
+app.listen(PORT, () => {
+  console.log(`Express server is listening on ${PORT}`);
 });
 
 export default app;
