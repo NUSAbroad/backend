@@ -1,8 +1,0 @@
-{
-  "extends": "./node_modules/gts/",
-  "rules": {
-    "no-unused-vars": "off",
-    "semi": [2, "always"],
-    "quotes": [2, "single"]
-  }
-}
