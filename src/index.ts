@@ -1,7 +1,7 @@
 import express from 'express';
-import { Request, Response, NextFunction } from 'express';
+import {Request, Response, NextFunction} from 'express';
 import cors from 'cors';
-import { PORT } from './consts';
+import {PORT} from './consts';
 
 const app = express();
 app.use(cors());
