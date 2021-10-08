@@ -9,16 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", async (req: Request, res: Response) => {
-  const universities = await University.findAll({
-    order: [["id", "ASC"]],
-    include: [
-      {
-        association: University.associations.Modules,
-      },
-    ],
-  });
-
-  res.status(200).json(universities);
+  res.send("Hello World!");
 });
 
 app.listen(PORT, () => {
