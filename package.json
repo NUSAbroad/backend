@@ -11,7 +11,7 @@
     "clean": "gts clean",
     "fix": "gts fix",
     "build": "tsc",
-    "heroku-postbuild": "PGSSLMODE=no-verify npx sequelize-cli db:migrate"
+    "heroku-postbuild": "npm run build && npx sequelize-cli db:migrate"
   },
   "author": "",
   "license": "ISC",
