@@ -1,14 +1,38 @@
 import express from 'express';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { PORT } from './consts';
+import { handleError } from './errors/utils';
+import { NotFound, HttpError } from 'http-errors';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.get('/', async (req: Request, res: Response) => {
-  res.send('Hello World!!!');
+  res.send('Hello World!');
+});
+
+// Handle all resource not found
+app.all('*', (req: Request, res: Response) => {
+  const err = new NotFound('Unable to find the resource you are looking for');
+  res.status(404).json(err);
+});
+
+// Catch all HTTP errors
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof HttpError) {
+    res.status(err.status).json(handleError(err));
+    return;
+  }
+
+  next(err);
+});
+
+// Catch all other non-HTTP errors
+app.use((err: Error, req: Request, res: Response) => {
+  console.error(err.stack);
+  res.status(500).json(handleError(err));
 });
 
 app.listen(PORT, () => {
