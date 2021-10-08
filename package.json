@@ -10,7 +10,8 @@
     "lint": "gts lint",
     "clean": "gts clean",
     "fix": "gts fix",
-    "build": "tsc"
+    "build": "tsc",
+    "heroku-postbuild": "PGSSLMODE=no-verify npx sequelize-cli db:migrate"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +23,7 @@
     "prettier": "^2.4.1",
     "sequelize": "^6.6.5",
     "sequelize-cli": "^6.2.0",
+    "sequelize-typescript": "^2.1.0",
     "typescript": "^4.4.3"
   },
   "devDependencies": {
