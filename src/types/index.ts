@@ -1,4 +1,4 @@
-import { Model, BuildOptions } from "sequelize/types";
+import { Model, BuildOptions } from 'sequelize/types';
 
 export type ModelStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): Model;

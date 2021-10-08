@@ -2,15 +2,14 @@ import {
   Model,
   DataTypes,
   Optional,
-  Association,
   BelongsToCreateAssociationMixin,
   BelongsToGetAssociationMixin,
-  BelongsToSetAssociationMixin,
-} from "sequelize";
+  BelongsToSetAssociationMixin
+} from 'sequelize';
 
-import sequelize from "../database";
+import sequelize from '../database';
 
-import University from "./University";
+import University from './University';
 
 export interface ModuleAttributes {
   id: number;
@@ -22,7 +21,7 @@ export interface ModuleAttributes {
 }
 
 export interface ModuleCreationAttributes
-  extends Optional<ModuleAttributes, "id"> {}
+  extends Optional<ModuleAttributes, 'id'> {}
 
 class Module
   extends Model<ModuleAttributes, ModuleCreationAttributes>
@@ -50,31 +49,31 @@ Module.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
+      allowNull: false
     },
     faculty: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     code: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     credits: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     universityId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "Universities",
-        key: "id",
-      },
-    },
+        model: 'Universities',
+        key: 'id'
+      }
+    }
   },
   { sequelize }
 );

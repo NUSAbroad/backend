@@ -12,11 +12,11 @@ import {
   HasManyHasAssociationsMixin,
   HasManyRemoveAssociationMixin,
   HasManyRemoveAssociationsMixin,
-  HasManySetAssociationsMixin,
-} from "sequelize";
+  HasManySetAssociationsMixin
+} from 'sequelize';
 
-import sequelize from "../database";
-import Module from "./Module";
+import sequelize from '../database';
+import Module from './Module';
 
 export interface UniversityAttributes {
   id: number;
@@ -26,7 +26,7 @@ export interface UniversityAttributes {
 }
 
 export interface UniversityCreationAttributes
-  extends Optional<UniversityAttributes, "id"> {}
+  extends Optional<UniversityAttributes, 'id'> {}
 
 class University
   extends Model<UniversityAttributes, UniversityCreationAttributes>
@@ -65,17 +65,17 @@ University.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
+      allowNull: false
     },
     name: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     country: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
-    cost: { type: DataTypes.STRING },
+    cost: { type: DataTypes.STRING }
   },
   { sequelize }
 );

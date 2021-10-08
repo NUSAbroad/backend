@@ -1,47 +1,48 @@
-"use strict";
+'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Modules", {
+    await queryInterface.createTable('Modules', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       faculty: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       },
       code: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
       credits: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: false
       },
       universityId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Universities",
-          key: "id",
+          model: 'Universities',
+          key: 'id'
         },
+        onDelete: 'cascade'
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-      },
+        type: Sequelize.DATE
+      }
     });
   },
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Modules");
-  },
+  down: async queryInterface => {
+    await queryInterface.dropTable('Modules');
+  }
 };
