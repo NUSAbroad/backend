@@ -25,7 +25,7 @@ module.exports = {
       },
       universityId: {
         type: Sequelize.INTEGER,
-        defaultValue: null,
+        allowNull: false,
         references: {
           model: 'Universities',
           key: 'id'

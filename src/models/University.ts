@@ -71,6 +71,7 @@ class University
   public readonly Mappings?: Mapping[];
 
   public static associations: {
+    Modules: Association<University, Module>;
     Mappings: Association<University, Mapping>;
   };
 }

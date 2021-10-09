@@ -73,7 +73,7 @@ Module.init(
     },
     universityId: {
       type: DataTypes.INTEGER,
-      defaultValue: null,
+      allowNull: false,
       references: {
         model: 'Universities',
         key: 'id'
