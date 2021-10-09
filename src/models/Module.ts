@@ -11,6 +11,11 @@ import sequelize from '../database';
 
 import University from './University';
 
+// Currently we will only be storing NUS modules in this schema
+// However, I'm keeping universityId in the event we store information
+// about PU modules, in the future.
+// universityId with null values will be NUS modules
+
 export interface ModuleAttributes {
   id: number;
   name: string;

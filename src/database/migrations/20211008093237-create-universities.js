@@ -17,8 +17,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      cost: {
+      state: {
         type: Sequelize.STRING
+      },
+      additionalInfo: {
+        type: Sequelize.JSON
       },
       createdAt: {
         allowNull: false,
