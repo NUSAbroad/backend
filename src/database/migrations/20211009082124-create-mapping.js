@@ -1,36 +1,48 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Modules', {
+    await queryInterface.createTable('Mappings', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      faculty: {
-        type: Sequelize.STRING
-      },
-      code: {
+      nusModuleFaculty: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      name: {
+      nusModuleCode: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      credits: {
+      nusModuleName: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      nusModuleCredits: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      universityId: {
+      partnerModuleCode: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      partnerModuleName: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      partnerModuleCredits: {
         type: Sequelize.INTEGER,
-        defaultValue: null,
+        allowNull: false
+      },
+      partnerUniversityId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Universities',
           key: 'id'
-        },
-        onDelete: 'cascade'
+        }
       },
       createdAt: {
         allowNull: false,
@@ -42,7 +54,8 @@ module.exports = {
       }
     });
   },
+
   down: async queryInterface => {
-    await queryInterface.dropTable('Modules');
+    await queryInterface.dropTable('Mappings');
   }
 };
