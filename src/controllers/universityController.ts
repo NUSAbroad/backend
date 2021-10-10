@@ -86,7 +86,6 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
           currRow += 1;
         })
         .on('error', err => {
-          // Stream will automatically exit once a parsing error is detected.
           const errMsg = `Row ${currRow}: ${err.message}`;
           console.error(errMsg);
           parseError = errMsg;
