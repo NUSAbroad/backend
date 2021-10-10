@@ -8,5 +8,6 @@ router.get('/:id', universityController.showUniversityFuncs);
 router.post('/', universityController.createUniversityFuncs);
 router.put('/:id', universityController.updateUniversityFuncs);
 router.delete('/:id', universityController.destroyUniversityFuncs);
+router.post('/import', universityController.importUniversityFuncs);
 
 export default router;
