@@ -1,5 +1,4 @@
-import { Module, University } from '../../models';
-import Mapping from '../../models/Mapping';
+import { Module, University, Mapping } from '../../models';
 
 declare module 'express' {
   interface Request {
