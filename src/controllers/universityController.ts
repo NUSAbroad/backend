@@ -125,9 +125,21 @@ async function destroyUniversity(req: Request, res: Response, next: NextFunction
   }
 }
 
+async function resetUniversity(req: Request, res: Response, next: NextFunction) {
+  try {
+    await University.destroy({
+      where: {}
+    });
+    res.status(200).end();
+  } catch (err) {
+    next(err);
+  }
+}
+
 export const indexUniversityFuncs = [indexUniversity];
 export const showUniversityFuncs = [retrieveUniversity, showUniversity];
 export const createUniversityFuncs = [createUniversity];
 export const updateUniversityFuncs = [retrieveUniversity, updateUniversity];
 export const destroyUniversityFuncs = [retrieveUniversity, destroyUniversity];
 export const importUniversityFuncs = [csvUpload.single(UPLOAD_CSV_FORM_FIELD), importUniversity];
+export const resetUniversityFuncs = [resetUniversity];
