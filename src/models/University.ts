@@ -27,8 +27,7 @@ export interface UniversityAttributes {
   additionalInfo: JSON | null;
 }
 
-export interface UniversityCreationAttributes
-  extends Optional<UniversityAttributes, 'id'> {}
+export interface UniversityCreationAttributes extends Optional<UniversityAttributes, 'id'> {}
 
 class University
   extends Model<UniversityAttributes, UniversityCreationAttributes>

@@ -25,13 +25,9 @@ export interface ModuleAttributes {
   universityId: number;
 }
 
-export interface ModuleCreationAttributes
-  extends Optional<ModuleAttributes, 'id'> {}
+export interface ModuleCreationAttributes extends Optional<ModuleAttributes, 'id'> {}
 
-class Module
-  extends Model<ModuleAttributes, ModuleCreationAttributes>
-  implements ModuleAttributes
-{
+class Module extends Model<ModuleAttributes, ModuleCreationAttributes> implements ModuleAttributes {
   public id!: number;
   public name!: string;
   public faculty!: string | null;

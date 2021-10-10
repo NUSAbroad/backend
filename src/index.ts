@@ -1,9 +1,13 @@
 import express from 'express';
 import { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import { ValidationError } from 'sequelize';
+
 import { PORT } from './consts';
 import { handleError } from './errors/utils';
 import { NotFound, HttpError } from 'http-errors';
+
+import universities from './routes/universities';
 
 const app = express();
 app.use(cors());
@@ -12,6 +16,8 @@ app.use(express.json());
 app.get('/', async (req: Request, res: Response) => {
   res.send('Hello World!');
 });
+
+app.use('/universities', universities);
 
 // Handle all resource not found
 app.all('*', (req: Request, res: Response) => {
@@ -23,6 +29,11 @@ app.all('*', (req: Request, res: Response) => {
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof HttpError) {
     res.status(err.status).json(handleError(err));
+    return;
+  }
+
+  if (err instanceof ValidationError) {
+    res.status(400).json(handleError(err));
     return;
   }
 

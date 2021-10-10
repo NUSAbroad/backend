@@ -23,8 +23,7 @@ export interface MappingAttributes {
   partnerUniversityId: number;
 }
 
-export interface MappingCreationAttributes
-  extends Optional<MappingAttributes, 'id'> {}
+export interface MappingCreationAttributes extends Optional<MappingAttributes, 'id'> {}
 
 class Mapping
   extends Model<MappingAttributes, MappingCreationAttributes>
