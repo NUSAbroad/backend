@@ -5,6 +5,8 @@ import { UniversityRow, formatUniversities } from '../utils/universities';
 import { parse } from 'fast-csv';
 import { UniversityCreationAttributes } from '../models/University';
 import { csvUpload, UPLOAD_CSV_FORM_FIELD } from '../consts/upload';
+import { Op } from 'sequelize';
+import { NUS } from '../consts';
 
 async function retrieveUniversity(req: Request, res: Response, next: NextFunction) {
   try {
@@ -112,9 +114,23 @@ async function destroyUniversity(req: Request, res: Response, next: NextFunction
 
 async function resetUniversity(req: Request, res: Response, next: NextFunction) {
   try {
-    await University.destroy({
-      where: {}
+    const universities = await University.findAll({
+      where: {
+        name: {
+          [Op.ne]: NUS
+        }
+      },
+      attributes: ['id']
     });
+
+    console.log(universities);
+
+    await Promise.all(
+      universities.map(async university => {
+        await university.destroy();
+      })
+    );
+
     res.status(200).end();
   } catch (err) {
     next(err);

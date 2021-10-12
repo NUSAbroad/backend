@@ -84,7 +84,9 @@ async function importMapping(req: Request, res: Response, next: NextFunction) {
 
     const mappingAttributes: MappingCreationAttributes[] = await generateMappings(results);
 
-    const mappings: Mapping[] = await Mapping.bulkCreate(mappingAttributes);
+    const mappings: Mapping[] = await Mapping.bulkCreate(mappingAttributes, {
+      ignoreDuplicates: true
+    });
     res.status(201).json(mappings);
   } catch (err) {
     next(err);
