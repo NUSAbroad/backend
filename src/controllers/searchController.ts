@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Op } from 'sequelize';
 import University from '../models/University';
 import { NUS } from '../consts';
+import { cleanInput } from '../utils/search';
 
 async function searchUniversities(req: Request, res: Response, next: NextFunction) {
   try {
@@ -43,10 +44,6 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
   } catch (err) {
     next(err);
   }
-}
-
-function cleanInput(input: String) {
-  return input.replace(/[|&!<>]+/g, '').replace(/ /g, '|');
 }
 
 export const searchFuncs = [searchUniversities];
