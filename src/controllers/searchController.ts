@@ -16,10 +16,10 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
       });
 
       res.status(200).json(universities);
+      return;
     }
 
     const query = cleanInput(req.params.query);
-    console.log(query);
     const universities = await University.sequelize!.query(
       `
         SELECT *
@@ -32,7 +32,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
           SELECT "id"
           FROM "Universities"
           WHERE _search @@ to_tsquery('english', '${query}')
-        )
+        ) AND name != '${NUS}'
       `,
       {
         model: University,
@@ -46,7 +46,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
 }
 
 function cleanInput(input: String) {
-  return input.replace(/[|&!<>]+/g, '').replace(/ /g, '');
+  return input.replace(/[|&!<>]+/g, '').replace(/ /g, '|');
 }
 
 export const searchFuncs = [searchUniversities];
