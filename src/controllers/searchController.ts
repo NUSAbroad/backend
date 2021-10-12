@@ -45,10 +45,6 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
   }
 }
 
-/**
- * Removes boolean operators from user query for to_tsquery.
- * @param input User query.
- */
 function cleanInput(input: String) {
   return input.replace(/[|&!<>]+/g, '').replace(/ /g, '');
 }

@@ -123,8 +123,6 @@ async function resetUniversity(req: Request, res: Response, next: NextFunction) 
       attributes: ['id']
     });
 
-    console.log(universities);
-
     await Promise.all(
       universities.map(async university => {
         await university.destroy();
