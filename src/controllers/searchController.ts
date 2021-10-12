@@ -21,25 +21,29 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
     }
 
     const query = cleanInput(req.params.query);
-    const universities = await University.sequelize!.query(
-      `
-        SELECT *
+    const country = req.query.country;
+
+    let queryString = `SELECT *
+      FROM "Universities"
+      WHERE (id IN (
+        SELECT "partnerUniversityId"
+        FROM "Mappings"
+        WHERE _search @@ to_tsquery('english', '${query}')
+      ) OR id IN (
+        SELECT "id"
         FROM "Universities"
-        WHERE id IN (
-          SELECT "partnerUniversityId"
-          FROM "Mappings"
-          WHERE _search @@ to_tsquery('english', '${query}')
-        ) OR id IN (
-          SELECT "id"
-          FROM "Universities"
-          WHERE _search @@ to_tsquery('english', '${query}')
-        ) AND name != '${NUS}'
-      `,
-      {
-        model: University,
-        replacements: { query: query }
-      }
-    );
+        WHERE _search @@ to_tsquery('english', '${query}')
+      )) AND name != '${NUS}'`;
+
+    if (country) {
+      queryString = queryString + ` AND country = '${country}'`;
+    }
+    console.log(queryString);
+
+    const universities = await University.sequelize!.query(queryString, {
+      model: University,
+      replacements: { query: query }
+    });
     res.status(200).json(universities);
   } catch (err) {
     next(err);
