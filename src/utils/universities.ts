@@ -1,5 +1,11 @@
 import { University } from '../models';
 
+interface UniversityRow {
+  name: string;
+  country: string;
+  state?: string;
+}
+
 async function formatUniversity(university: University) {
   const mappings = await university.getMappings();
   const mappingsCount = mappings.length;
@@ -21,4 +27,4 @@ async function formatUniversities(universities: University[]) {
   return formattedUniversities;
 }
 
-export { formatUniversity, formatUniversities };
+export { UniversityRow, formatUniversity, formatUniversities };

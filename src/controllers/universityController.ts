@@ -1,24 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { University } from '../models';
 import { BadRequest, NotFound } from 'http-errors';
-import { formatUniversities } from '../utils/universities';
-import multer from 'multer';
+import { UniversityRow, formatUniversities } from '../utils/universities';
 import { parse } from 'fast-csv';
 import { UniversityCreationAttributes } from '../models/University';
-
-const UPLOAD_CSV_FORM_FIELD = 'file';
-const MAX_CSV_SIZE = 10 * 1024 * 1024;
-
-const csvUpload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: MAX_CSV_SIZE }
-});
-
-interface UniversityRow {
-  name: string;
-  country: string;
-  state?: string;
-}
+import { csvUpload, UPLOAD_CSV_FORM_FIELD } from '../consts/upload';
 
 async function retrieveUniversity(req: Request, res: Response, next: NextFunction) {
   try {
@@ -81,14 +67,14 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
 
     await new Promise((resolve, _reject) => {
       const stream = parse({ headers: true })
-        .on('data', (row: UniversityRow) => {
-          results.push(row as UniversityCreationAttributes);
-          currRow += 1;
-        })
         .on('error', err => {
           const errMsg = `Row ${currRow}: ${err.message}`;
           console.error(errMsg);
           parseError = errMsg;
+          currRow += 1;
+        })
+        .on('data', (row: UniversityRow) => {
+          results.push(row as UniversityCreationAttributes);
           currRow += 1;
         })
         .on('end', (rowCount: number) => resolve(rowCount));

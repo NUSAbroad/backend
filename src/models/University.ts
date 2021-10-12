@@ -93,8 +93,7 @@ University.init(
       type: DataTypes.STRING
     },
     state: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING
     },
     additionalInfo: {
       type: DataTypes.JSON
