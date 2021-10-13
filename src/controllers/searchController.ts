@@ -21,9 +21,8 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
     }
 
     const query = cleanInput(req.params.query);
-    const country = req.query.country;
 
-    let queryString = `SELECT *
+    const queryString = `SELECT *
       FROM "Universities"
       WHERE (id IN (
         SELECT "partnerUniversityId"
@@ -34,11 +33,6 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
         FROM "Universities"
         WHERE _search @@ to_tsquery('english', '${query}')
       )) AND name != '${NUS}'`;
-
-    if (country) {
-      queryString = queryString + ` AND country = '${country}'`;
-    }
-    console.log(queryString);
 
     const universities = await University.sequelize!.query(queryString, {
       model: University,
