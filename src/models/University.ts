@@ -24,6 +24,7 @@ export interface UniversityAttributes {
   name: string;
   country: string;
   state: string | null;
+  slug: string;
   additionalInfo: JSON | null;
 }
 
@@ -37,6 +38,7 @@ class University
   public name!: string;
   public country!: string;
   public state!: string | null;
+  public slug!: string;
   public additionalInfo!: JSON | null;
 
   public readonly createdAt!: Date;
@@ -94,6 +96,11 @@ University.init(
     },
     state: {
       type: DataTypes.STRING
+    },
+    slug: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
     },
     additionalInfo: {
       type: DataTypes.JSON
