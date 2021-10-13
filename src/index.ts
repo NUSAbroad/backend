@@ -10,6 +10,7 @@ import { NotFound, HttpError } from 'http-errors';
 import universities from './routes/universities';
 import mappings from './routes/mappings';
 import modules from './routes/modules';
+import search from './routes/search';
 
 const app = express();
 app.use(cors());
@@ -22,6 +23,7 @@ app.get('/', async (req: Request, res: Response) => {
 app.use('/universities', universities);
 app.use('/mappings', mappings);
 app.use('/modules', modules);
+app.use('/search', search);
 
 // Handle all resource not found
 app.all('*', (req: Request, res: Response) => {
