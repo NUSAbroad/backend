@@ -1,3 +1,5 @@
+import slug from 'slug';
+
 import { Request, Response, NextFunction } from 'express';
 import { University } from '../models';
 import { BadRequest, NotFound } from 'http-errors';
@@ -5,7 +7,8 @@ import { UniversityRow, formatUniversities, addSlugToUniversityRow } from '../ut
 import { parse } from 'fast-csv';
 import { UniversityCreationAttributes } from '../models/University';
 import { csvUpload, UPLOAD_CSV_FORM_FIELD } from '../consts/upload';
-import slug from 'slug';
+import { Op } from 'sequelize';
+import { NUS } from '../consts';
 
 async function retrieveUniversity(req: Request, res: Response, next: NextFunction) {
   try {
@@ -82,7 +85,7 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
         })
         .on('data', (row: UniversityRow) => {
           const newRow = addSlugToUniversityRow(row);
-          results.push(row as UniversityCreationAttributes);
+          results.push(newRow as UniversityCreationAttributes);
           currRow += 1;
         })
         .on('end', (rowCount: number) => resolve(rowCount));
@@ -126,9 +129,21 @@ async function destroyUniversity(req: Request, res: Response, next: NextFunction
 
 async function resetUniversity(req: Request, res: Response, next: NextFunction) {
   try {
-    await University.destroy({
-      where: {}
+    const universities = await University.findAll({
+      where: {
+        name: {
+          [Op.ne]: NUS
+        }
+      },
+      attributes: ['id']
     });
+
+    await Promise.all(
+      universities.map(async university => {
+        await university.destroy();
+      })
+    );
+
     res.status(200).end();
   } catch (err) {
     next(err);

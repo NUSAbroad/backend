@@ -113,7 +113,8 @@ async function generateMappings(mappingsInfo: MappingInfo[]) {
               partnerUniversityId: partnerUniversity.id
             };
 
-            mappingAttributes.push(mappingCreationAttributes);
+            if (nusModule.nusModuleCredits && puModule.partnerModuleCredits)
+              mappingAttributes.push(mappingCreationAttributes);
           });
         });
       }
