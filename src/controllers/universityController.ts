@@ -1,7 +1,9 @@
+import slug from 'slug';
+
 import { Request, Response, NextFunction } from 'express';
 import { University } from '../models';
 import { BadRequest, NotFound } from 'http-errors';
-import { UniversityRow, formatUniversities } from '../utils/universities';
+import { UniversityRow, formatUniversities, addSlugToUniversityRow } from '../utils/universities';
 import { parse } from 'fast-csv';
 import { UniversityCreationAttributes } from '../models/University';
 import { csvUpload, UPLOAD_CSV_FORM_FIELD } from '../consts/upload';
@@ -10,7 +12,10 @@ import { NUS } from '../consts';
 
 async function retrieveUniversity(req: Request, res: Response, next: NextFunction) {
   try {
-    const university = await University.findByPk(req.params.id, {
+    const university = await University.findOne({
+      where: {
+        slug: req.params.slug
+      },
       include: [
         {
           association: University.associations.Mappings,
@@ -51,6 +56,9 @@ async function showUniversity(req: Request, res: Response, next: NextFunction) {
 
 async function createUniversity(req: Request, res: Response, next: NextFunction) {
   try {
+    const slugName = slug(req.body.name);
+    req.body.slug = slugName;
+
     const university = await University.create(req.body);
     res.status(201).json(university);
   } catch (err) {
@@ -76,7 +84,8 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
           currRow += 1;
         })
         .on('data', (row: UniversityRow) => {
-          results.push(row as UniversityCreationAttributes);
+          const newRow = addSlugToUniversityRow(row);
+          results.push(newRow as UniversityCreationAttributes);
           currRow += 1;
         })
         .on('end', (rowCount: number) => resolve(rowCount));
@@ -96,6 +105,12 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
 
 async function updateUniversity(req: Request, res: Response, next: NextFunction) {
   try {
+    const slugName = slug(req.body.name);
+
+    if (slugName !== req.university!.slug) {
+      req.university!.slug = slugName;
+    }
+
     const university = await req.university!.update(req.body);
     res.status(200).json(university);
   } catch (err) {
