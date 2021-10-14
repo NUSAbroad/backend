@@ -7,7 +7,8 @@ import {
   UniversityRow,
   formatUniversities,
   addSlugToUniversityRow,
-  addCountryIds
+  addCountryIds,
+  cleanUniversityRow
 } from '../utils/universities';
 import { parse } from 'fast-csv';
 import { UniversityCreationAttributes } from '../models/University';
@@ -105,7 +106,8 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
           currRow += 1;
         })
         .on('data', (row: UniversityRow) => {
-          const newRow = addSlugToUniversityRow(row);
+          const cleanedRow = cleanUniversityRow(row);
+          const newRow = addSlugToUniversityRow(cleanedRow);
           countryNames.add(newRow.country);
           results.push(newRow);
           currRow += 1;
@@ -114,6 +116,8 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
       stream.write(csvString);
       stream.end();
     });
+
+    console.log(results);
 
     if (parseError) throw new BadRequest('Error occured when parsing csv file!');
 
