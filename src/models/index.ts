@@ -27,3 +27,4 @@ associate(models);
 export { default as University } from './University';
 export { default as Module } from './Module';
 export { default as Mapping } from './Mapping';
+export { default as Country } from './Country';

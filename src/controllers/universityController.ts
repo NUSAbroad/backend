@@ -1,14 +1,21 @@
 import slug from 'slug';
 
 import { Request, Response, NextFunction } from 'express';
-import { University } from '../models';
+import { Country, University } from '../models';
 import { BadRequest, NotFound } from 'http-errors';
-import { UniversityRow, formatUniversities, addSlugToUniversityRow } from '../utils/universities';
+import {
+  UniversityRow,
+  formatUniversities,
+  addSlugToUniversityRow,
+  addCountryIds
+} from '../utils/universities';
 import { parse } from 'fast-csv';
 import { UniversityCreationAttributes } from '../models/University';
 import { csvUpload, UPLOAD_CSV_FORM_FIELD } from '../consts/upload';
-import { Op } from 'sequelize';
+import { Op, Transaction } from 'sequelize';
 import { NUS } from '../consts';
+import sequelize from '../database';
+import { CountryCreationAttributes } from '../models/Country';
 
 async function retrieveUniversity(req: Request, res: Response, next: NextFunction) {
   try {
@@ -20,6 +27,10 @@ async function retrieveUniversity(req: Request, res: Response, next: NextFunctio
         {
           association: University.associations.Mappings,
           attributes: { exclude: ['createdAt', 'updatedAt'] }
+        },
+        {
+          association: University.associations.Country,
+          attributes: ['name']
         }
       ]
     });
@@ -36,7 +47,13 @@ async function retrieveUniversity(req: Request, res: Response, next: NextFunctio
 async function indexUniversity(req: Request, res: Response, next: NextFunction) {
   try {
     const universities = await University.findAll({
-      order: [['id', 'ASC']]
+      order: [['id', 'ASC']],
+      include: [
+        {
+          association: University.associations.Country,
+          attributes: ['name']
+        }
+      ]
     });
 
     const result = await formatUniversities(universities);
@@ -67,11 +84,15 @@ async function createUniversity(req: Request, res: Response, next: NextFunction)
 }
 
 async function importUniversity(req: Request, res: Response, next: NextFunction) {
+  const t: Transaction = await sequelize.transaction();
+
   try {
     if (!req.file) throw new BadRequest('No file was sent over!');
 
     const csvString = req.file!.buffer.toString('utf-8').trim();
-    const results: UniversityCreationAttributes[] = [];
+    const results: UniversityRow[] = [];
+    const countryNames = new Set<String>();
+
     let currRow = 2;
     let parseError = '';
 
@@ -85,7 +106,8 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
         })
         .on('data', (row: UniversityRow) => {
           const newRow = addSlugToUniversityRow(row);
-          results.push(newRow as UniversityCreationAttributes);
+          countryNames.add(newRow.country);
+          results.push(newRow);
           currRow += 1;
         })
         .on('end', (rowCount: number) => resolve(rowCount));
@@ -95,10 +117,30 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
 
     if (parseError) throw new BadRequest('Error occured when parsing csv file!');
 
-    const universities = await University.bulkCreate(results);
+    const countries = [...countryNames.values()];
+    const countriesObj = countries.map((name: String) => {
+      return {
+        name
+      };
+    }) as CountryCreationAttributes[];
+
+    await Country.bulkCreate(countriesObj, {
+      transaction: t,
+      ignoreDuplicates: true
+    });
+
+    const universitiesAttributes: UniversityCreationAttributes[] = await addCountryIds(results, t);
+
+    const universities = await University.bulkCreate(universitiesAttributes, {
+      transaction: t,
+      ignoreDuplicates: true
+    });
+
+    await t.commit();
 
     res.status(201).json(universities);
   } catch (err) {
+    await t.rollback();
     next(err);
   }
 }

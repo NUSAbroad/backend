@@ -11,6 +11,7 @@ import universities from './routes/universities';
 import mappings from './routes/mappings';
 import modules from './routes/modules';
 import search from './routes/search';
+import countries from './routes/countries';
 
 const app = express();
 app.use(cors());
@@ -24,6 +25,7 @@ app.use('/universities', universities);
 app.use('/mappings', mappings);
 app.use('/modules', modules);
 app.use('/search', search);
+app.use('/countries', countries);
 
 // Handle all resource not found
 app.all('*', (req: Request, res: Response) => {
