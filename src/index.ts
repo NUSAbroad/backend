@@ -12,7 +12,7 @@ import mappings from './routes/mappings';
 import modules from './routes/modules';
 import search from './routes/search';
 import countries from './routes/countries';
-import scrape from './routes/scrape';
+import links from './routes/links';
 
 const app = express();
 app.use(cors());
@@ -27,7 +27,7 @@ app.use('/mappings', mappings);
 app.use('/modules', modules);
 app.use('/search', search);
 app.use('/countries', countries);
-app.use('/scrape', scrape);
+app.use('/links', links);
 
 // Handle all resource not found
 app.all('*', (req: Request, res: Response) => {
