@@ -130,7 +130,6 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
     });
 
     const universitiesAttributes: UniversityCreationAttributes[] = await addCountryIds(results, t);
-    console.log(universitiesAttributes);
 
     const universities = await University.bulkCreate(universitiesAttributes, {
       transaction: t,
