@@ -2,6 +2,7 @@ import {
   Model,
   DataTypes,
   Optional,
+  Association,
   BelongsToCreateAssociationMixin,
   BelongsToGetAssociationMixin,
   BelongsToSetAssociationMixin
@@ -42,6 +43,12 @@ class Module extends Model<ModuleAttributes, ModuleCreationAttributes> implement
   public createUniversity!: BelongsToCreateAssociationMixin<University>;
   public getUniversity!: BelongsToGetAssociationMixin<University>;
   public setUniversity!: BelongsToSetAssociationMixin<University, number>;
+
+  public readonly University?: University;
+
+  public static associations: {
+    University: Association<Module, University>;
+  };
 }
 
 Module.init(
