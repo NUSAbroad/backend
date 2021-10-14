@@ -56,7 +56,6 @@ async function scrapeData() {
 
 async function scrapePDFLinks(req: Request, res: Response, next: NextFunction) {
   try {
-    console.log('Here');
     await scrapeData();
     res.status(200).json('Done');
   } catch (err) {
