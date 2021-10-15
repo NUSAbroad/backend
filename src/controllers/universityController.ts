@@ -35,12 +35,15 @@ async function retrieveUniversity(req: Request, res: Response, next: NextFunctio
         {
           association: University.associations.Links,
           attributes: ['name', 'link']
+        },
+        {
+          association: University.associations.Semesters,
+          attributes: ['description']
         }
       ]
     });
-    if (university === null) {
-      throw new NotFound('No university with this id!');
-    }
+    if (!university) throw new NotFound('No university with this slug!');
+
     req.university = university;
     next();
   } catch (err) {
@@ -60,6 +63,10 @@ async function indexUniversity(req: Request, res: Response, next: NextFunction) 
         {
           association: University.associations.Links,
           attributes: ['name', 'link']
+        },
+        {
+          association: University.associations.Semesters,
+          attributes: ['description']
         }
       ]
     });

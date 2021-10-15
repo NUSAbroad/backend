@@ -9,7 +9,7 @@ async function retrieveCountry(req: Request, res: Response, next: NextFunction) 
     });
 
     if (country === null) {
-      throw new NotFound('No module with this id!');
+      throw new NotFound('No country with this id!');
     }
 
     req.country = country;

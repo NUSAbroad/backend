@@ -23,6 +23,7 @@ import Module from './Module';
 import Mapping from './Mapping';
 import Country from './Country';
 import Link from './Link';
+import Semester from './Semester';
 
 export interface UniversityAttributes {
   id: number;
@@ -90,9 +91,22 @@ class University
   public removeLinks!: HasManyRemoveAssociationsMixin<Link, number>;
   public setLinks!: HasManySetAssociationsMixin<Link, number>;
 
+  // University.hasMany(Semester)
+  public addSemester!: HasManyAddAssociationMixin<Semester, number>;
+  public addSemesters!: HasManyAddAssociationsMixin<Semester, number>;
+  public countSemesters!: HasManyCountAssociationsMixin;
+  public createSemesters!: HasManyCreateAssociationMixin<Semester>;
+  public getSemesters!: HasManyGetAssociationsMixin<Semester>;
+  public hasSemester!: HasManyHasAssociationMixin<Semester, number>;
+  public hasSemesters!: HasManyHasAssociationsMixin<Semester, number>;
+  public removeSemester!: HasManyRemoveAssociationMixin<Semester, number>;
+  public removeSemesters!: HasManyRemoveAssociationsMixin<Semester, number>;
+  public setSemesters!: HasManySetAssociationsMixin<Semester, number>;
+
   public readonly Modules?: Module[];
   public readonly Mappings?: Mapping[];
   public readonly Links?: Link[];
+  public readonly Semesters?: Semester[];
   public readonly Country?: Country;
 
   public static associations: {
@@ -100,6 +114,7 @@ class University
     Mappings: Association<University, Mapping>;
     Country: Association<University, Country>;
     Links: Association<University, Link>;
+    Semesters: Association<University, Semester>;
   };
 }
 

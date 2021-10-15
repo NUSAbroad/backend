@@ -1,7 +1,7 @@
 import { Models } from '../../types/';
 
 export function associate(models: Models) {
-  const { University, Module, Mapping, Country, Link } = models;
+  const { University, Module, Mapping, Country, Link, Semester } = models;
 
   Module.belongsTo(University, { foreignKey: 'universityId' });
   University.hasMany(Module, { foreignKey: 'universityId', onDelete: 'cascade', hooks: true });
@@ -22,4 +22,7 @@ export function associate(models: Models) {
 
   Link.belongsTo(University, { foreignKey: 'universityId' });
   University.hasMany(Link, { foreignKey: 'universityId', onDelete: 'cascade', hooks: true });
+
+  Semester.belongsTo(University, { foreignKey: 'universityId' });
+  University.hasMany(Semester, { foreignKey: 'universityId', onDelete: 'cascade', hooks: true });
 }

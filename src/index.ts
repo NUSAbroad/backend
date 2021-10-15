@@ -13,6 +13,7 @@ import modules from './routes/modules';
 import search from './routes/search';
 import countries from './routes/countries';
 import links from './routes/links';
+import semesters from './routes/semesters';
 
 const app = express();
 app.use(cors());
@@ -28,6 +29,7 @@ app.use('/modules', modules);
 app.use('/search', search);
 app.use('/countries', countries);
 app.use('/links', links);
+app.use('/semesters', semesters);
 
 // Handle all resource not found
 app.all('*', (req: Request, res: Response) => {

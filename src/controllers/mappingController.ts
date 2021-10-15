@@ -11,9 +11,8 @@ async function retrieveMapping(req: Request, res: Response, next: NextFunction) 
     const mapping = await Mapping.findByPk(req.params.id, {
       attributes: { exclude: ['createdAt', 'updatedAt'] }
     });
-    if (mapping === null) {
-      throw new NotFound('No mapping with this id!');
-    }
+    if (!mapping) throw new NotFound('No mapping with this id!');
+
     req.mapping = mapping;
     next();
   } catch (err) {

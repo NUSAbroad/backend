@@ -11,9 +11,9 @@ async function retrieveModule(req: Request, res: Response, next: NextFunction) {
     const module = await Module.findByPk(req.params.id, {
       attributes: { exclude: ['createdAt', 'updatedAt'] }
     });
-    if (module === null) {
-      throw new NotFound('No module with this id!');
-    }
+
+    if (!module) throw new NotFound('No module with this id!');
+
     req.module = module;
     next();
   } catch (err) {
