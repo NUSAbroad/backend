@@ -14,7 +14,6 @@ async function scrapeData() {
   const { data } = await axios.get(url);
   // Load HTML we fetched in the previous line
   const $ = cheerio.load(data);
-  // console.log(pretty($.html()));
 
   // Select all the list items under accordion-list element
   const links: LinkCreationAttributes[] = [];
