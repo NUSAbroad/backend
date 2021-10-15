@@ -117,8 +117,6 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
       stream.end();
     });
 
-    console.log(results);
-
     if (parseError) throw new BadRequest('Error occured when parsing csv file!');
 
     const countries = [...countryNames.values()];
