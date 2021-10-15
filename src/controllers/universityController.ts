@@ -26,8 +26,7 @@ async function retrieveUniversity(req: Request, res: Response, next: NextFunctio
       },
       include: [
         {
-          association: University.associations.Mappings,
-          attributes: { exclude: ['createdAt', 'updatedAt'] }
+          association: University.associations.Mappings
         },
         {
           association: University.associations.Country,
