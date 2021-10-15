@@ -57,3 +57,7 @@ To update your local database with the latest schemas, run `npx sequelize-cli db
 1. Refer to `nusabroad-backend` under Environments of this repository for the latest deployment status
 
 ## Documentation
+
+### Database design
+[Database Schemas](https://dbdiagram.io/d/615eeb5d940c4c4eec8a1c1a)
+
