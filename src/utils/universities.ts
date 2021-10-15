@@ -4,11 +4,51 @@ import { UniversityCreationAttributes } from '../models/University';
 import { fetchCountryId } from '../utils/countries';
 import { Transaction } from 'sequelize/types';
 
+type additionalInfo = {
+  [key: string]: string;
+};
+
 interface UniversityRow {
   name: string;
   country: string;
   state?: string;
   slug?: string;
+  additionalInfo?: string | additionalInfo;
+}
+
+function buildAdditionalInfo(additionalInfo: string) {
+  const keyValuePairs = additionalInfo.split('\n');
+  const result: additionalInfo = {};
+
+  keyValuePairs.map((keyValuePair: string) => {
+    const [key, value] = keyValuePair.split(':');
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (key.trim() && value.trim()) {
+      result[key.trim()] = value.trim();
+    }
+  });
+
+  return result;
+}
+
+function cleanUniversityRow(row: UniversityRow) {
+  // Remove if blank line
+  if (!row.state) {
+    delete row['state'];
+  } else {
+    row.state = row.state.trim();
+  }
+
+  // Remove if blank line
+  if (!row.additionalInfo) {
+    delete row['additionalInfo'];
+  } else {
+    const additionalInfo = buildAdditionalInfo(row.additionalInfo as string);
+    row.additionalInfo = additionalInfo;
+  }
+
+  return row;
 }
 
 function addSlugToUniversityRow(row: UniversityRow) {
@@ -43,13 +83,13 @@ async function addCountryIds(universities: UniversityRow[], t: Transaction) {
   return await Promise.all(
     universities.map(async (university: UniversityRow) => {
       const countryId = await fetchCountryId(university.country, t);
-      console.log(countryId);
 
       const universityCreationAttributes: UniversityCreationAttributes = {
         name: university.name,
         slug: university.slug!,
         state: university.state || null,
-        additionalInfo: null,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        additionalInfo: (university.additionalInfo as any) || null,
         countryId
       };
 
@@ -63,5 +103,6 @@ export {
   formatUniversity,
   formatUniversities,
   addSlugToUniversityRow,
-  addCountryIds
+  addCountryIds,
+  cleanUniversityRow
 };

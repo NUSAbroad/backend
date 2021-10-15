@@ -7,7 +7,8 @@ import {
   UniversityRow,
   formatUniversities,
   addSlugToUniversityRow,
-  addCountryIds
+  addCountryIds,
+  cleanUniversityRow
 } from '../utils/universities';
 import { parse } from 'fast-csv';
 import { UniversityCreationAttributes } from '../models/University';
@@ -25,8 +26,7 @@ async function retrieveUniversity(req: Request, res: Response, next: NextFunctio
       },
       include: [
         {
-          association: University.associations.Mappings,
-          attributes: { exclude: ['createdAt', 'updatedAt'] }
+          association: University.associations.Mappings
         },
         {
           association: University.associations.Country,
@@ -120,7 +120,8 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
           currRow += 1;
         })
         .on('data', (row: UniversityRow) => {
-          const newRow = addSlugToUniversityRow(row);
+          const cleanedRow = cleanUniversityRow(row);
+          const newRow = addSlugToUniversityRow(cleanedRow);
           countryNames.add(newRow.country);
           results.push(newRow);
           currRow += 1;

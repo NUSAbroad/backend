@@ -74,8 +74,6 @@ async function scrapePDFLinks(req: Request, res: Response, next: NextFunction) {
       ignoreDuplicates: true
     });
 
-    console.log(links);
-
     res.status(200).json(links);
   } catch (err) {
     next(err);

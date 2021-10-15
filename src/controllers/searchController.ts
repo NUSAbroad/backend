@@ -3,6 +3,7 @@ import { Op } from 'sequelize';
 import University from '../models/University';
 import { NUS } from '../consts';
 import { cleanInput } from '../utils/search';
+import { formatUniversities } from '../utils/universities';
 
 async function searchUniversities(req: Request, res: Response, next: NextFunction) {
   try {
@@ -13,7 +14,17 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
           name: {
             [Op.ne]: NUS
           }
-        }
+        },
+        include: [
+          {
+            association: University.associations.Country,
+            attributes: ['name']
+          },
+          {
+            association: University.associations.Links,
+            attributes: ['name', 'link']
+          }
+        ]
       });
 
       res.status(200).json(universities);
@@ -38,7 +49,30 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
       model: University,
       replacements: { query: query }
     });
-    res.status(200).json(universities);
+
+    const universitiesIds = universities.map(university => university.id);
+
+    // Added this because FE needs the associations, checked the search timing its still pretty fast ~200ms
+    const searchResult = await University.findAll({
+      where: {
+        id: universitiesIds
+      },
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      include: [
+        {
+          association: University.associations.Country,
+          attributes: ['name']
+        },
+        {
+          association: University.associations.Links,
+          attributes: ['name', 'link']
+        }
+      ]
+    });
+
+    const result = await formatUniversities(searchResult);
+
+    res.status(200).json(result);
   } catch (err) {
     next(err);
   }
