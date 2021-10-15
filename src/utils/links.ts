@@ -7,7 +7,7 @@ import { LinkCreationAttributes } from '../models/Link';
 
 const baseUrl = 'https://nus.edu.sg';
 const url = 'https://www.nus.edu.sg/gro/global-programmes/student-exchange/partner-universities';
-const groPDF = 'GRO PDF';
+const groPDF = 'GRO Infosheet';
 
 async function scrapeData() {
   // Fetch HTML of the page we want to scrape
