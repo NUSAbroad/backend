@@ -1,5 +1,3 @@
-import { ModuleCreationAttributes } from '../models/Module';
-
 interface ModuleInfo {
   moduleCode: string;
   faculty: string;
@@ -7,12 +5,20 @@ interface ModuleInfo {
   moduleCredit: string;
 }
 
+interface ModuleFormattedInfo {
+  code: string;
+  faculty: string;
+  credits: number;
+  name: string;
+  universityId: number;
+}
+
 function formatModules(modulesInfo: ModuleInfo[], nusId: number) {
   console.log(typeof modulesInfo);
   return modulesInfo.map((moduleInfo: ModuleInfo) => {
     const { moduleCode, title, moduleCredit, faculty } = moduleInfo;
 
-    const moduleAttribute: ModuleCreationAttributes = {
+    const moduleAttribute: ModuleFormattedInfo = {
       faculty,
       code: moduleCode,
       name: title,
@@ -24,4 +30,4 @@ function formatModules(modulesInfo: ModuleInfo[], nusId: number) {
   });
 }
 
-export { ModuleInfo, formatModules };
+export { ModuleInfo, formatModules, ModuleFormattedInfo };
