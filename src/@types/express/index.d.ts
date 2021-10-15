@@ -1,4 +1,4 @@
-import { Module, University, Mapping, Country } from '../../models';
+import { Module, University, Mapping, Country, Link } from '../../models';
 
 declare module 'express' {
   interface Request {
@@ -6,6 +6,7 @@ declare module 'express' {
     module?: Module;
     mapping?: Mapping;
     country?: Country;
+    link?: Link;
 
     file?: Express.Multer.File;
   }

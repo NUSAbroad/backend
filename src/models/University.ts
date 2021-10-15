@@ -22,6 +22,7 @@ import sequelize from '../database';
 import Module from './Module';
 import Mapping from './Mapping';
 import Country from './Country';
+import Link from './Link';
 
 export interface UniversityAttributes {
   id: number;
@@ -60,7 +61,7 @@ class University
   public removeModules!: HasManyRemoveAssociationsMixin<Module, number>;
   public setModules!: HasManySetAssociationsMixin<Module, number>;
 
-  // University.hasMany(Module)
+  // University.hasMany(Mapping)
   public addMapping!: HasManyAddAssociationMixin<Mapping, number>;
   public addMappings!: HasManyAddAssociationsMixin<Mapping, number>;
   public countMappings!: HasManyCountAssociationsMixin;
@@ -77,14 +78,28 @@ class University
   public getCountry!: BelongsToGetAssociationMixin<Country>;
   public setCountry!: BelongsToSetAssociationMixin<Country, number>;
 
+  // University.hasMany(Link)
+  public addLink!: HasManyAddAssociationMixin<Link, number>;
+  public addLinks!: HasManyAddAssociationsMixin<Link, number>;
+  public countLinks!: HasManyCountAssociationsMixin;
+  public createLinks!: HasManyCreateAssociationMixin<Link>;
+  public getLinks!: HasManyGetAssociationsMixin<Link>;
+  public hasLink!: HasManyHasAssociationMixin<Link, number>;
+  public hasLinks!: HasManyHasAssociationsMixin<Link, number>;
+  public removeLink!: HasManyRemoveAssociationMixin<Link, number>;
+  public removeLinks!: HasManyRemoveAssociationsMixin<Link, number>;
+  public setLinks!: HasManySetAssociationsMixin<Link, number>;
+
   public readonly Modules?: Module[];
   public readonly Mappings?: Mapping[];
+  public readonly Links?: Link[];
   public readonly Country?: Country;
 
   public static associations: {
     Modules: Association<University, Module>;
     Mappings: Association<University, Mapping>;
     Country: Association<University, Country>;
+    Links: Association<University, Link>;
   };
 }
 

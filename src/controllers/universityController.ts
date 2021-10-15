@@ -31,6 +31,10 @@ async function retrieveUniversity(req: Request, res: Response, next: NextFunctio
         {
           association: University.associations.Country,
           attributes: ['name']
+        },
+        {
+          association: University.associations.Links,
+          attributes: ['name', 'link']
         }
       ]
     });
@@ -52,6 +56,10 @@ async function indexUniversity(req: Request, res: Response, next: NextFunction) 
         {
           association: University.associations.Country,
           attributes: ['name']
+        },
+        {
+          association: University.associations.Links,
+          attributes: ['name', 'link']
         }
       ]
     });
