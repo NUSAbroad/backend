@@ -14,7 +14,17 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
           name: {
             [Op.ne]: NUS
           }
-        }
+        },
+        include: [
+          {
+            association: University.associations.Country,
+            attributes: ['name']
+          },
+          {
+            association: University.associations.Links,
+            attributes: ['name', 'link']
+          }
+        ]
       });
 
       res.status(200).json(universities);
