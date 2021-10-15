@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Op } from 'sequelize';
 import University from '../models/University';
-import { NUS } from '../consts';
+import { NUSSLUG } from '../consts';
 import { cleanInput } from '../utils/search';
 import { formatUniversities } from '../utils/universities';
 import { getAllUniversityInclude } from '../controllers/universityController';
@@ -12,8 +12,8 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
       const universities = await University.findAll({
         order: [['id', 'ASC']],
         where: {
-          name: {
-            [Op.ne]: NUS
+          slug: {
+            [Op.ne]: NUSSLUG
           }
         },
         include: [
@@ -48,7 +48,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
         SELECT "id"
         FROM "Universities"
         WHERE _search @@ to_tsquery('english', '${query}:*')
-      )) AND name != '${NUS}'`;
+      )) AND slug != '${NUSSLUG}'`;
 
     const universities = await University.sequelize!.query(queryString, {
       model: University,
