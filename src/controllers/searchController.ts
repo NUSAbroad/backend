@@ -4,6 +4,7 @@ import University from '../models/University';
 import { NUS } from '../consts';
 import { cleanInput } from '../utils/search';
 import { formatUniversities } from '../utils/universities';
+import { getAllUniversityInclude } from '../controllers/universityController';
 
 async function searchUniversities(req: Request, res: Response, next: NextFunction) {
   try {
@@ -23,6 +24,10 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
           {
             association: University.associations.Links,
             attributes: ['name', 'link']
+          },
+          {
+            association: University.associations.Semesters,
+            attributes: ['description']
           }
         ]
       });
@@ -58,16 +63,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
         id: universitiesIds
       },
       attributes: { exclude: ['createdAt', 'updatedAt'] },
-      include: [
-        {
-          association: University.associations.Country,
-          attributes: ['name']
-        },
-        {
-          association: University.associations.Links,
-          attributes: ['name', 'link']
-        }
-      ]
+      include: getAllUniversityInclude()
     });
 
     const result = await formatUniversities(searchResult);
