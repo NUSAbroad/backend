@@ -27,11 +27,11 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
       WHERE (id IN (
         SELECT "partnerUniversityId"
         FROM "Mappings"
-        WHERE _search @@ to_tsquery('english', '${query}')
+        WHERE _search @@ to_tsquery('english', '${query}:*')
       ) OR id IN (
         SELECT "id"
         FROM "Universities"
-        WHERE _search @@ to_tsquery('english', '${query}')
+        WHERE _search @@ to_tsquery('english', '${query}:*')
       )) AND name != '${NUS}'`;
 
     const universities = await University.sequelize!.query(queryString, {
