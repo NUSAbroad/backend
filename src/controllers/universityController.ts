@@ -18,6 +18,23 @@ import { NUS } from '../consts';
 import sequelize from '../database';
 import { CountryCreationAttributes } from '../models/Country';
 
+function getAllUniversityInclude() {
+  return [
+    {
+      association: University.associations.Country,
+      attributes: ['name']
+    },
+    {
+      association: University.associations.Links,
+      attributes: ['name', 'link']
+    },
+    {
+      association: University.associations.Semesters,
+      attributes: ['description']
+    }
+  ];
+}
+
 async function retrieveUniversity(req: Request, res: Response, next: NextFunction) {
   try {
     const university = await University.findOne({
@@ -35,12 +52,15 @@ async function retrieveUniversity(req: Request, res: Response, next: NextFunctio
         {
           association: University.associations.Links,
           attributes: ['name', 'link']
+        },
+        {
+          association: University.associations.Semesters,
+          attributes: ['description']
         }
       ]
     });
-    if (university === null) {
-      throw new NotFound('No university with this id!');
-    }
+    if (!university) throw new NotFound('No university with this slug!');
+
     req.university = university;
     next();
   } catch (err) {
@@ -52,16 +72,7 @@ async function indexUniversity(req: Request, res: Response, next: NextFunction) 
   try {
     const universities = await University.findAll({
       order: [['id', 'ASC']],
-      include: [
-        {
-          association: University.associations.Country,
-          attributes: ['name']
-        },
-        {
-          association: University.associations.Links,
-          attributes: ['name', 'link']
-        }
-      ]
+      include: getAllUniversityInclude()
     });
 
     const result = await formatUniversities(universities);
@@ -208,3 +219,4 @@ export const updateUniversityFuncs = [retrieveUniversity, updateUniversity];
 export const destroyUniversityFuncs = [retrieveUniversity, destroyUniversity];
 export const importUniversityFuncs = [csvUpload.single(UPLOAD_CSV_FORM_FIELD), importUniversity];
 export const resetUniversityFuncs = [resetUniversity];
+export { getAllUniversityInclude };

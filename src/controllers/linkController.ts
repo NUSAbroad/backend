@@ -10,9 +10,7 @@ async function retrieveLink(req: Request, res: Response, next: NextFunction) {
       attributes: { exclude: ['createdAt', 'updatedAt'] }
     });
 
-    if (link === null) {
-      throw new NotFound('No link with this id!');
-    }
+    if (!link) throw new NotFound('No link with this id!');
 
     req.link = link;
     next();
