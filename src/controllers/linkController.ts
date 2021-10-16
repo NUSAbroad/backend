@@ -67,6 +67,17 @@ async function destroyLink(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function resetLinks(req: Request, res: Response, next: NextFunction) {
+  try {
+    await Link.destroy({
+      where: {}
+    });
+    res.status(200).end();
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function scrapePDFLinks(req: Request, res: Response, next: NextFunction) {
   try {
     const linkCreationAttributes: LinkCreationAttributes[] = await scrapeData();
@@ -85,4 +96,5 @@ export const showLinkFuncs = [retrieveLink, showLink];
 export const createLinkFuncs = [createLink];
 export const updateLinkFuncs = [retrieveLink, updateLink];
 export const destroyLinkFuncs = [retrieveLink, destroyLink];
+export const resetLinksFuncs = [resetLinks];
 export const scrapeGROLinksFuncs = [scrapePDFLinks];

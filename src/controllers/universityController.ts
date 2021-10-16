@@ -14,7 +14,7 @@ import { parse } from 'fast-csv';
 import { UniversityCreationAttributes } from '../models/University';
 import { csvUpload, UPLOAD_CSV_FORM_FIELD } from '../consts/upload';
 import { Op, Transaction } from 'sequelize';
-import { NUS } from '../consts';
+import { NUSSLUG } from '../consts';
 import sequelize from '../database';
 import { CountryCreationAttributes } from '../models/Country';
 
@@ -193,8 +193,8 @@ async function resetUniversity(req: Request, res: Response, next: NextFunction) 
   try {
     const universities = await University.findAll({
       where: {
-        name: {
-          [Op.ne]: NUS
+        slug: {
+          [Op.ne]: NUSSLUG
         }
       },
       attributes: ['id']

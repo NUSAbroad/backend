@@ -7,6 +7,7 @@ router.get('/', linkController.indexLinkFuncs);
 router.get('/:id', linkController.showLinkFuncs);
 router.post('/', linkController.createLinkFuncs);
 router.post('/scrape', linkController.scrapeGROLinksFuncs);
+router.post('/reset', linkController.resetLinksFuncs);
 router.put('/:id', linkController.updateLinkFuncs);
 router.delete('/:id', linkController.destroyLinkFuncs);
 
