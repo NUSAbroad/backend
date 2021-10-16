@@ -30,20 +30,7 @@ const format = winston.format.combine(
   winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
 );
 
-let transports;
-
-if (NODE_ENV === 'development') {
-  transports = [
-    new winston.transports.Console(),
-    new winston.transports.File({
-      filename: 'logs/error.log',
-      level: 'error'
-    }),
-    new winston.transports.File({ filename: 'logs/all.log' })
-  ];
-} else {
-  transports = [new winston.transports.Console()];
-}
+const transports = [new winston.transports.Console()];
 
 const Logger = winston.createLogger({
   level,
