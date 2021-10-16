@@ -1,0 +1,2405 @@
+{
+	"info": {
+		"_postman_id": "7191813c-a6d0-4f80-8218-9b763f1170d7",
+		"name": "NUSAbroad",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Universities",
+			"item": [
+				{
+					"name": "Get university",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/universities/:slug",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"universities",
+								":slug"
+							],
+							"variable": [
+								{
+									"key": "slug",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get university",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/universities/:slug",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"universities",
+										":slug"
+									],
+									"variable": [
+										{
+											"key": "slug",
+											"value": "imperial-college-lonodn"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get universities",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Singapore\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/countries",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"countries"
+							]
+						},
+						"description": "Get information of all products. Includes the information of the respective stalls."
+					},
+					"response": []
+				},
+				{
+					"name": "Create university",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"National University of Singapore\",\n    \"country\": \"Singapore\",\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/universities",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"universities"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create university",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Imperial College London\",\n    \"country\": \"United Kingdom\",\n    \"state\": \"London\",\n    \"additionalInfo\": {\n        \"Estimated Costs\": \"$3000 euros a semester\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/universities",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"universities"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Update university",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/universities/:slug",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"universities",
+								":slug"
+							],
+							"variable": [
+								{
+									"key": "slug",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update university",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Imperial College London\",\n    \"country\": \"United Kingdom\",\n    \"state\": \"London\",\n    \"additionalInfo\": {\n        \"Estimated Costs\": \"$3000 euros a semester\",\n        \"Minimum CAP\": \"3.90 / 4.00\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/universities/:slug",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"universities",
+										":slug"
+									],
+									"variable": [
+										{
+											"key": "slug",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Delete university",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/universities/:slug",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"universities",
+								":slug"
+							],
+							"variable": [
+								{
+									"key": "slug",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete university",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/universities/:slug",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"universities",
+										":slug"
+									],
+									"variable": [
+										{
+											"key": "slug",
+											"value": "imperial-college-london"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Reset partner universities",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Duck Rice\",\n    \"stallId\": 10,\n    \"category\": \"chinese cuisine\",\n    \"description\": \"duck rice\",\n    \"price\": 2.5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/universities/reset",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"universities",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Import partner universities",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/universities/import",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"universities",
+								"import"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Import partner universities",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/gheed/Desktop/universities _sample.csv"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/universities/import",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"universities",
+										"import"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			],
+			"description": "Fields allowed\n- name: string;\n- category: string | null;\n- description: string | null;\n- price: number | null;\n- image: string | null;\n- stallId: number;",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Mappings",
+			"item": [
+				{
+					"name": "Get mapping",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/mappings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mappings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get mapping",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/mappings/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"mappings",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get mappings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/mappings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mappings"
+							]
+						},
+						"description": "Get information of all products. Includes the information of the respective stalls."
+					},
+					"response": []
+				},
+				{
+					"name": "Create mapping",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nusFacultyId\": 1,\r\n    \"nusModuleFaculty\": \"SoC\",\r\n    \"nusModuleCode\": \"CS2030\",\r\n    \"nusModuleName\": \"Programming Methodology II\",\r\n    \"nusModuleCredits\": 4,\r\n    \"partnerModuleCode\": \"CS2030\",\r\n    \"partnerModuleName\": \"Programming Methodology II\",\r\n    \"partnerModuleCredits\": 4,\r\n    \"partnerUniversityId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/mappings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mappings"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create mapping",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nusFacultyId\": 1,\r\n    \"nusModuleFaculty\": \"SoC\",\r\n    \"nusModuleCode\": \"CS2030\",\r\n    \"nusModuleName\": \"Programming Methodology II\",\r\n    \"nusModuleCredits\": 4,\r\n    \"partnerModuleCode\": \"CS2030\",\r\n    \"partnerModuleName\": \"Programming Methodology II\",\r\n    \"partnerModuleCredits\": 4,\r\n    \"partnerUniversityId\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/mappings",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"mappings"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Update mapping",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nusFacultyId\": 1,\r\n    \"nusModuleFaculty\": \"SoC\",\r\n    \"nusModuleCode\": \"CS2030\",\r\n    \"nusModuleName\": \"Programming Methodology II\",\r\n    \"nusModuleCredits\": 4,\r\n    \"partnerModuleCode\": \"CS2030\",\r\n    \"partnerModuleName\": \"Programming Methodology II\",\r\n    \"partnerModuleCredits\": 4,\r\n    \"partnerUniversityId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/mappings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mappings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update mapping",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nusFacultyId\": 1,\r\n    \"nusModuleFaculty\": \"SoC\",\r\n    \"nusModuleCode\": \"CS2030\",\r\n    \"nusModuleName\": \"Programming Methodology II\",\r\n    \"nusModuleCredits\": 4,\r\n    \"partnerModuleCode\": \"CS2030\",\r\n    \"partnerModuleName\": \"Programming Methodology II\",\r\n    \"partnerModuleCredits\": 4,\r\n    \"partnerUniversityId\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/mappings/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"mappings",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Delete mapping",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/mappings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mappings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset mappings",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Duck Rice\",\n    \"stallId\": 10,\n    \"category\": \"chinese cuisine\",\n    \"description\": \"duck rice\",\n    \"price\": 2.5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/mappings/reset",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mappings",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Import mappings",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/mappings/import",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mappings",
+								"import"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Import mappings",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/gheed/Desktop/universities _sample.csv"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/mappings/import",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"mappings",
+										"import"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			],
+			"description": "Fields allowed\n- name: string;\n- category: string | null;\n- description: string | null;\n- price: number | null;\n- image: string | null;\n- stallId: number;",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Modules",
+			"item": [
+				{
+					"name": "Get module",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/modules/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"modules",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get modules",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/modules/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"modules",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get modules",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/modules",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"modules"
+							]
+						},
+						"description": "Get information of all products. Includes the information of the respective stalls."
+					},
+					"response": []
+				},
+				{
+					"name": "Create module",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"facultyId\": 1,\r\n    \"faculty\": \"SoC\",\r\n    \"code\": \"CS2030\",\r\n    \"name\": \"Programming Methodology II\",\r\n    \"credits\": 4,\r\n    \"universityId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/modules",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"modules"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create module",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"facultyId\": 1,\r\n    \"faculty\": \"SoC\",\r\n    \"code\": \"CS2030\",\r\n    \"name\": \"Programming Methodology II\",\r\n    \"credits\": 4,\r\n    \"universityId\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/mappings",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"mappings"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Update module",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"facultyId\": 1,\r\n    \"faculty\": \"SoC\",\r\n    \"code\": \"CS2030\",\r\n    \"name\": \"Programming Methodology II\",\r\n    \"credits\": 4,\r\n    \"universityId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/mappings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mappings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update module",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"facultyId\": 1,\r\n    \"faculty\": \"SoC\",\r\n    \"code\": \"CS2030\",\r\n    \"name\": \"Programming Methodology II\",\r\n    \"credits\": 4,\r\n    \"universityId\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/mappings/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"mappings",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Delete module",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/modules/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"modules",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset modules",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/modules/reset",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"modules",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Populate modules",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"year\": \"2020-2021\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/modules/populate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"modules",
+								"populate"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Populate modules",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/gheed/Desktop/mappings_sample.csv"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/modules/populate",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"modules",
+										"populate"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			],
+			"description": "Fields allowed\n- name: string;\n- category: string | null;\n- description: string | null;\n- price: number | null;\n- image: string | null;\n- stallId: number;",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Countries",
+			"item": [
+				{
+					"name": "Get country",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/countries/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"countries",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get country",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/countries/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"countries",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get countries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/countries",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"countries"
+							]
+						},
+						"description": "Get information of all products. Includes the information of the respective stalls."
+					},
+					"response": []
+				},
+				{
+					"name": "Create country",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Singapore\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/countries",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"countries"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create country",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Singapore\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/countries",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"countries"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Update country",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Singapore\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/countries/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"countries",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update country",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Singapore\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/mappings/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"mappings",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Delete country",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/countries/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"countries",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Fields allowed\n- name: string;\n- category: string | null;\n- description: string | null;\n- price: number | null;\n- image: string | null;\n- stallId: number;",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Links",
+			"item": [
+				{
+					"name": "Get link",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/links/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"links",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get link",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/links/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"links",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get links",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/links",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"links"
+							]
+						},
+						"description": "Get information of all products. Includes the information of the respective stalls."
+					},
+					"response": []
+				},
+				{
+					"name": "Create link",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Singapore\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/links",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"links"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create link",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"University Website\",\r\n    \"link\": \"https://www.nus.edu.sg/\",\r\n    \"universityId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/links",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"links"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Update link",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"University Website\",\r\n    \"link\": \"https://www.nus.edu.sg/\",\r\n    \"universityId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/links/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"links",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update country",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Singapore\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/links/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"links",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Delete Link",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/links/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"links",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset links",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/links/reset",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"links",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Scrape GRO links",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/links/scrape",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"links",
+								"scrape"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Fields allowed\n- name: string;\n- category: string | null;\n- description: string | null;\n- price: number | null;\n- image: string | null;\n- stallId: number;",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Semesters",
+			"item": [
+				{
+					"name": "Get semester",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/semesters/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"semesters",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get country semester",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/semesters/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"semesters",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get semesters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/semesters",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"semesters"
+							]
+						},
+						"description": "Get information of all products. Includes the information of the respective stalls."
+					},
+					"response": []
+				},
+				{
+					"name": "Create semester",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Singapore\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/countries",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"countries"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create semester",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Jan 2021 - May 2021\",\r\n    \"universityId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/semesters",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"semesters"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Update semester",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Singapore\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/mappings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mappings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update semester",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Jan 2021 - May 2021\",\r\n    \"universityId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/semesters/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"semesters",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Delete semester",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/semesters/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"semesters",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Fields allowed\n- name: string;\n- category: string | null;\n- description: string | null;\n- price: number | null;\n- image: string | null;\n- stallId: number;",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Faculties",
+			"item": [
+				{
+					"name": "Get faculty",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/faculties/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"faculties",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get faculty",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/faculties/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"faculties",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get faculties",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/faculties",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"faculties"
+							]
+						},
+						"description": "Get information of all products. Includes the information of the respective stalls."
+					},
+					"response": []
+				},
+				{
+					"name": "Create faculty",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"School of Computing\",\r\n    \"type\": \"PU\",\r\n    \"universityId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/faculties",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"faculties"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create faculty",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"School of Computing\",\r\n    \"type\": \"PU\",\r\n    \"universityId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/faculties",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"faculties"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Update faculty",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"School of Computing\",\r\n    \"type\": \"PU\",\r\n    \"universityId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/faculties/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"faculties",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update faculty",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Singapore\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/faculties/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"faculties",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Delete faculty",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/faculties/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"faculties",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Fields allowed\n- name: string;\n- category: string | null;\n- description: string | null;\n- price: number | null;\n- image: string | null;\n- stallId: number;",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "Get search query results",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/search/:query",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"search",
+								":query"
+							],
+							"variable": [
+								{
+									"key": "query",
+									"value": "Politiques"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get search query results",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/search/:query",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"search",
+										":query"
+									],
+									"variable": [
+										{
+											"key": "query",
+											"value": "chongqing"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		}
+	]
+}
