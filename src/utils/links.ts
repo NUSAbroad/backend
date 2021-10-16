@@ -1,6 +1,7 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 import slug from 'slug';
+import Logger from '../logger/logger';
 
 import { University } from '../models';
 import { LinkCreationAttributes } from '../models/Link';
@@ -34,19 +35,20 @@ async function scrapeData() {
         }
       });
 
-      if (university) {
-        if (!pdfLink.startsWith('https')) pdfLink = baseUrl + pdfLink;
-
-        const link = {
-          name: groPDF,
-          link: pdfLink,
-          universityId: university.id
-        };
-
-        links.push(link);
-      } else {
-        console.log('No hit!', universityName, universitySlug);
+      if (!university) {
+        Logger.warn('No university found for link', pdfLink);
+        return;
       }
+
+      if (!pdfLink.startsWith('https')) pdfLink = baseUrl + pdfLink;
+
+      const link = {
+        name: groPDF,
+        link: pdfLink,
+        universityId: university.id
+      };
+
+      links.push(link);
     })
   );
 
