@@ -17,6 +17,7 @@ import { Op, Transaction } from 'sequelize';
 import { NUSSLUG } from '../consts';
 import sequelize from '../database';
 import { CountryCreationAttributes } from '../models/Country';
+import { bulkCreateRelatedInfo } from '../utils/universities';
 
 function getAllUniversityInclude() {
   return [
@@ -156,9 +157,22 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
       ignoreDuplicates: true
     });
 
+    await bulkCreateRelatedInfo(results, t);
+
     await t.commit();
 
-    res.status(201).json(universities);
+    const universitiesSlugs = universities.map((university: University) => {
+      return university.slug;
+    });
+
+    const universitiesWithRelatedInfo = await University.findAll({
+      where: {
+        slug: universitiesSlugs
+      },
+      include: getAllUniversityInclude()
+    });
+
+    res.status(201).json(universitiesWithRelatedInfo);
   } catch (err) {
     await t.rollback();
     next(err);

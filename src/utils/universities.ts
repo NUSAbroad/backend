@@ -3,6 +3,10 @@ import slug from 'slug';
 import { UniversityCreationAttributes } from '../models/University';
 import { fetchCountryId } from '../utils/countries';
 import { Transaction } from 'sequelize/types';
+import { BadRequest } from 'http-errors';
+import { createRelatedLinks } from './links';
+import { createRelatedFaculties } from './faculties';
+import { createRelatedSemesters } from './semesters';
 
 type additionalInfo = {
   [key: string]: string;
@@ -12,8 +16,11 @@ interface UniversityRow {
   name: string;
   country: string;
   state?: string;
-  slug?: string;
+  slug: string;
   additionalInfo?: string | additionalInfo;
+  faculties: string;
+  semesters: string;
+  links: string;
 }
 
 function buildAdditionalInfo(additionalInfo: string) {
@@ -98,11 +105,34 @@ async function addCountryIds(universities: UniversityRow[], t: Transaction) {
   );
 }
 
+async function bulkCreateRelatedInfo(universities: UniversityRow[], t: Transaction) {
+  await Promise.all(
+    universities.map(async (universityRow: UniversityRow) => {
+      const university = await University.findOne({
+        where: {
+          slug: universityRow.slug
+        }
+      });
+
+      if (!university) throw new BadRequest('No university found!');
+
+      await Promise.all([
+        await createRelatedLinks(universityRow.links, university.id, t),
+        await createRelatedSemesters(universityRow.semesters, university.id, t),
+        await createRelatedFaculties(universityRow.faculties, university.id, t)
+      ]);
+
+      return university;
+    })
+  );
+}
+
 export {
   UniversityRow,
   formatUniversity,
   formatUniversities,
   addSlugToUniversityRow,
   addCountryIds,
-  cleanUniversityRow
+  cleanUniversityRow,
+  bulkCreateRelatedInfo
 };
