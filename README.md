@@ -14,6 +14,8 @@ Backend repository for NUSAbroad
     - [Linting, Formatting and CI Check](#linting-formatting-and-ci-check)
   - [Deployment](#deployment)
   - [Documentation](#documentation)
+    - [Database design](#database-design)
+    - [Postman collection](#postman-collection)
 
 ## Environment Set up
 
@@ -59,5 +61,9 @@ To update your local database with the latest schemas, run `npx sequelize-cli db
 ## Documentation
 
 ### Database design
+
 [Database Schemas](https://dbdiagram.io/d/615eeb5d940c4c4eec8a1c1a)
 
+### Postman collection
+
+[Postman collection](/docs/NUSAbroad.postman_collection.json)
