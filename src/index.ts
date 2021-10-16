@@ -7,6 +7,8 @@ import { PORT } from './consts';
 import { handleError } from './errors/utils';
 import { NotFound, HttpError } from 'http-errors';
 
+import Logger from './logger/logger';
+
 import universities from './routes/universities';
 import mappings from './routes/mappings';
 import modules from './routes/modules';
@@ -14,12 +16,19 @@ import search from './routes/search';
 import countries from './routes/countries';
 import links from './routes/links';
 import semesters from './routes/semesters';
+import morganMiddleware from './middleware/morganMiddleware';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(morganMiddleware);
 
 app.get('/', async (req: Request, res: Response) => {
+  Logger.error('This is an error log');
+  Logger.warn('This is a warn log');
+  Logger.info('This is a info log');
+  Logger.http('This is a http log');
+  Logger.debug('This is a debug log');
   res.send('Hello World!');
 });
 
