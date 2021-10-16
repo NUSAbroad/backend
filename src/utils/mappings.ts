@@ -1,5 +1,7 @@
 import { MappingCreationAttributes } from '../models/Mapping';
-import { University } from '../models';
+import { Faculty, University } from '../models';
+import { getFacultyAcronym } from './faculties';
+import { BadRequest } from 'http-errors';
 
 interface MappingRow {
   Faculty: string;
@@ -31,6 +33,17 @@ interface PUModule {
   partnerModuleCode: string;
   partnerModuleCredits: number;
   partnerUniversityName: string;
+}
+
+interface FormattedMapping {
+  nusModuleName: string;
+  nusModuleCode: string;
+  nusModuleFaculty: string;
+  nusModuleCredits: number;
+  partnerModuleName: string;
+  partnerModuleCode: string;
+  partnerModuleCredits: number;
+  partnerUniversityId: number;
 }
 
 interface MappingInfo {
@@ -91,7 +104,7 @@ function createMappingInfo(data: MappingRow): MappingInfo {
 }
 
 async function generateMappings(mappingsInfo: MappingInfo[]) {
-  const mappingAttributes: MappingCreationAttributes[] = [];
+  const formattedMappings: FormattedMapping[] = [];
 
   await Promise.all(
     mappingsInfo.map(async (mappingInfo: MappingInfo) => {
@@ -105,8 +118,9 @@ async function generateMappings(mappingsInfo: MappingInfo[]) {
       if (partnerUniversity) {
         mappingInfo.nusModules.forEach((nusModule: NUSModule) => {
           mappingInfo.puModules.forEach((puModule: PUModule) => {
-            const mappingCreationAttributes: MappingCreationAttributes = {
+            const formattedMapping: FormattedMapping = {
               ...nusModule,
+              nusModuleFaculty: getFacultyAcronym(nusModule.nusModuleFaculty),
               partnerModuleName: puModule.partnerModuleName,
               partnerModuleCredits: puModule.partnerModuleCredits,
               partnerModuleCode: puModule.partnerModuleCode,
@@ -114,10 +128,28 @@ async function generateMappings(mappingsInfo: MappingInfo[]) {
             };
 
             if (nusModule.nusModuleCredits && puModule.partnerModuleCredits)
-              mappingAttributes.push(mappingCreationAttributes);
+              formattedMappings.push(formattedMapping);
           });
         });
       }
+    })
+  );
+
+  const mappingAttributes: MappingCreationAttributes[] = await Promise.all(
+    formattedMappings.map(async (formattedMapping: FormattedMapping) => {
+      const nusFaculty = await Faculty.findOne({
+        where: {
+          name: formattedMapping.nusModuleFaculty
+        }
+      });
+
+      if (!nusFaculty)
+        throw new BadRequest(`No such faculty found ${formattedMapping.nusModuleFaculty}`);
+
+      return {
+        ...formattedMapping,
+        nusFacultyId: nusFaculty.id
+      };
     })
   );
 

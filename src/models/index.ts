@@ -30,3 +30,4 @@ export { default as Mapping } from './Mapping';
 export { default as Country } from './Country';
 export { default as Link } from './Link';
 export { default as Semester } from './Semester';
+export { default as Faculty } from './Faculty';

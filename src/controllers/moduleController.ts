@@ -1,10 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import { Module, University } from '../models';
+import { Module, University, Faculty } from '../models';
 import { NotFound, BadRequest } from 'http-errors';
 import axios, { AxiosResponse } from 'axios';
 import { NUS_MODS_MODULES_INFO_URL } from '../consts';
 import { ModuleInfo, formatModules } from '../utils/modules';
 import { ModuleCreationAttributes } from '../models/Module';
+import { getFacultyAcronym, getFacultyIds } from '../utils/faculties';
+import { FacultyCreationAttributes } from '../models/Faculty';
+import { Transaction } from 'sequelize';
+import sequelize from '../database';
+import { NUS_TYPE } from '../consts/faculty';
 
 async function retrieveModule(req: Request, res: Response, next: NextFunction) {
   try {
@@ -81,6 +86,7 @@ async function resetModule(req: Request, res: Response, next: NextFunction) {
 }
 
 async function populateModule(req: Request, res: Response, next: NextFunction) {
+  const t: Transaction = await sequelize.transaction();
   try {
     if (!req.body.year) throw new BadRequest('Not academic year specified');
 
@@ -88,7 +94,7 @@ async function populateModule(req: Request, res: Response, next: NextFunction) {
       NUS_MODS_MODULES_INFO_URL + `/${req.body.year}/moduleInfo.json`
     );
 
-    const modulesInfo: ModuleInfo[] = response.data;
+    let modulesInfo: ModuleInfo[] = response.data;
 
     const nusUniversity = await University.findOne({
       where: {
@@ -100,12 +106,48 @@ async function populateModule(req: Request, res: Response, next: NextFunction) {
 
     const nusId = nusUniversity.id;
 
-    const formattedModules: ModuleCreationAttributes[] = formatModules(modulesInfo, nusId);
+    const facultiesSet = new Set<String>();
 
-    const modules = await Module.bulkCreate(formattedModules);
+    modulesInfo = modulesInfo.map((moduleInfo: ModuleInfo) => {
+      const acronym = getFacultyAcronym(moduleInfo.faculty);
+      facultiesSet.add(acronym);
+      moduleInfo.faculty = acronym;
+
+      return moduleInfo;
+    });
+
+    const faculties = [...facultiesSet.values()];
+
+    const facultyCreationAttributes: FacultyCreationAttributes[] = faculties.map(
+      (faculty: String) => {
+        return {
+          name: faculty as string,
+          type: NUS_TYPE,
+          universityId: nusId
+        };
+      }
+    );
+
+    await Faculty.bulkCreate(facultyCreationAttributes, {
+      ignoreDuplicates: true,
+      transaction: t
+    });
+
+    const formattedModules: ModuleCreationAttributes[] = await getFacultyIds(
+      formatModules(modulesInfo, nusId),
+      t
+    );
+
+    const modules = await Module.bulkCreate(formattedModules, {
+      ignoreDuplicates: true,
+      transaction: t
+    });
+
+    await t.commit();
 
     res.status(201).json(modules);
   } catch (err) {
+    await t.rollback();
     next(err);
   }
 }

@@ -11,6 +11,7 @@ import {
 import sequelize from '../database';
 
 import University from './University';
+import Faculty from './Faculty';
 
 // Currently we will only be storing NUS modules in this schema
 // However, I'm keeping universityId in the event we store information
@@ -24,6 +25,7 @@ export interface ModuleAttributes {
   faculty: string | null;
   credits: number;
   universityId: number;
+  facultyId: number;
 }
 
 export interface ModuleCreationAttributes extends Optional<ModuleAttributes, 'id'> {}
@@ -35,6 +37,7 @@ class Module extends Model<ModuleAttributes, ModuleCreationAttributes> implement
   public code!: string;
   public credits!: number;
   public universityId!: number;
+  public facultyId!: number;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -44,10 +47,17 @@ class Module extends Model<ModuleAttributes, ModuleCreationAttributes> implement
   public getUniversity!: BelongsToGetAssociationMixin<University>;
   public setUniversity!: BelongsToSetAssociationMixin<University, number>;
 
+  // Module.belongsTo(Faculty)
+  public createFaculty!: BelongsToCreateAssociationMixin<Faculty>;
+  public getFaculty!: BelongsToGetAssociationMixin<Faculty>;
+  public setFaculty!: BelongsToSetAssociationMixin<Faculty, number>;
+
   public readonly University?: University;
+  public readonly Faculty?: Faculty;
 
   public static associations: {
     University: Association<Module, University>;
+    Faculty: Association<Module, Faculty>;
   };
 }
 
@@ -73,6 +83,14 @@ Module.init(
     credits: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    facultyId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Faculties',
+        key: 'id'
+      }
     },
     universityId: {
       type: DataTypes.INTEGER,

@@ -11,9 +11,11 @@ import {
 import sequelize from '../database';
 
 import University from './University';
+import Faculty from './Faculty';
 
 export interface MappingAttributes {
   id: number;
+  nusFacultyId: number;
   nusModuleFaculty: string;
   nusModuleCode: string;
   nusModuleName: string;
@@ -31,6 +33,7 @@ class Mapping
   implements MappingAttributes
 {
   public id!: number;
+  public nusFacultyId!: number;
   public nusModuleFaculty!: string;
   public nusModuleCode!: string;
   public nusModuleName!: string;
@@ -48,10 +51,17 @@ class Mapping
   public getUniversity!: BelongsToGetAssociationMixin<University>;
   public setUniversity!: BelongsToSetAssociationMixin<University, number>;
 
+  // Mapping.belongsTo(Faculty)
+  public createFaculty!: BelongsToCreateAssociationMixin<Faculty>;
+  public getFaculty!: BelongsToGetAssociationMixin<Faculty>;
+  public setFaculty!: BelongsToSetAssociationMixin<Faculty, number>;
+
   public readonly University?: University;
+  public readonly Faculty?: Faculty;
 
   public static associations: {
     University: Association<Mapping, University>;
+    Faculty: Association<Mapping, Faculty>;
   };
 }
 
@@ -96,6 +106,14 @@ Mapping.init(
       type: DataTypes.INTEGER,
       references: {
         model: 'Universities',
+        key: 'id'
+      }
+    },
+    nusFacultyId: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Faculties',
         key: 'id'
       }
     }
