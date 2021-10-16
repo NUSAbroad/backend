@@ -89,12 +89,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/countries",
+							"raw": "{{base_url}}/universities",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"countries"
+								"universities"
 							]
 						},
 						"description": "Get information of all products. Includes the information of the respective stalls."
