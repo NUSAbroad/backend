@@ -12,7 +12,7 @@ const levels = {
   debug: 4
 };
 
-const level = NODE_ENV === 'development' ? 'debug' : 'http';
+const level = NODE_ENV === 'development' ? 'debug' : 'warn';
 
 const colors = {
   error: 'red',
