@@ -1,8 +1,9 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
+import { Transaction } from 'sequelize/types';
 import slug from 'slug';
 
-import { University } from '../models';
+import { University, Link } from '../models';
 import { LinkCreationAttributes } from '../models/Link';
 
 const baseUrl = 'https://nus.edu.sg';
@@ -53,4 +54,30 @@ async function scrapeData() {
   return links;
 }
 
-export { scrapeData };
+async function createRelatedLinks(links: string, universityId: number, t: Transaction) {
+  const linksArr = links.split('\n');
+
+  const linksCreationAttribute: LinkCreationAttributes[] = [];
+
+  linksArr.forEach((linkStr: string) => {
+    const [name, link] = linkStr.split(': ');
+
+    if (name && link) {
+      const linkCreationAttribute: LinkCreationAttributes = {
+        name: name.trim(),
+        link: link.trim(),
+        universityId
+      };
+      linksCreationAttribute.push(linkCreationAttribute);
+    }
+  });
+
+  const createdLinks = await Link.bulkCreate(linksCreationAttribute, {
+    ignoreDuplicates: true,
+    transaction: t
+  });
+
+  return createdLinks;
+}
+
+export { scrapeData, createRelatedLinks };
