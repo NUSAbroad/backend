@@ -85,7 +85,7 @@ function createMappingInfo(data: MappingRow): MappingInfo {
 
   puModules.push(puModule1);
 
-  if (data['NUS Module 2']) {
+  if (data['PU Module 2']) {
     const puModule2: PUModule = {
       partnerModuleName: data['PU Module 2 Title'],
       partnerModuleCode: data['PU Module 2'],
