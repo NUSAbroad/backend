@@ -15,6 +15,7 @@ import countries from './routes/countries';
 import links from './routes/links';
 import semesters from './routes/semesters';
 import faculties from './routes/faculties';
+import users from './routes/users';
 
 const app = express();
 app.use(cors());
@@ -33,6 +34,7 @@ app.use('/countries', countries);
 app.use('/links', links);
 app.use('/semesters', semesters);
 app.use('/faculties', faculties);
+app.use('/', users);
 
 // Handle all resource not found
 app.all('*', (req: Request, res: Response) => {

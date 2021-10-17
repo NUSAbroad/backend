@@ -108,7 +108,6 @@ async function addCountryIds(universities: UniversityRow[], t: Transaction) {
 async function bulkCreateRelatedInfo(universities: UniversityRow[], t: Transaction) {
   await Promise.all(
     universities.map(async (universityRow: UniversityRow) => {
-      // console.log(universityRow.slug);
       const university = await University.findOne({
         where: {
           slug: universityRow.slug
