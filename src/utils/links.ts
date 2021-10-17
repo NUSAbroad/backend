@@ -55,6 +55,8 @@ async function scrapeData() {
 }
 
 async function createRelatedLinks(links: string, universityId: number, t: Transaction) {
+  if (!links) return;
+
   const linksArr = links.split('\n');
 
   const linksCreationAttribute: LinkCreationAttributes[] = [];

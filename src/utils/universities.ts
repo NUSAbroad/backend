@@ -117,7 +117,6 @@ async function bulkCreateRelatedInfo(universities: UniversityRow[], t: Transacti
       });
 
       if (!university) {
-        console.log(universityRow);
         throw new BadRequest('No university found!');
       }
 
