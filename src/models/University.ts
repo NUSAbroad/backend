@@ -24,6 +24,7 @@ import Mapping from './Mapping';
 import Country from './Country';
 import Link from './Link';
 import Semester from './Semester';
+import Faculty from './Faculty';
 
 export interface UniversityAttributes {
   id: number;
@@ -103,10 +104,23 @@ class University
   public removeSemesters!: HasManyRemoveAssociationsMixin<Semester, number>;
   public setSemesters!: HasManySetAssociationsMixin<Semester, number>;
 
+  // University.hasMany(Faculty)
+  public addFaculty!: HasManyAddAssociationMixin<Faculty, number>;
+  public addFacultys!: HasManyAddAssociationsMixin<Faculty, number>;
+  public countFacultys!: HasManyCountAssociationsMixin;
+  public createFacultys!: HasManyCreateAssociationMixin<Faculty>;
+  public getFacultys!: HasManyGetAssociationsMixin<Faculty>;
+  public hasFaculty!: HasManyHasAssociationMixin<Faculty, number>;
+  public hasFacultys!: HasManyHasAssociationsMixin<Faculty, number>;
+  public removeFaculty!: HasManyRemoveAssociationMixin<Faculty, number>;
+  public removeFacultys!: HasManyRemoveAssociationsMixin<Faculty, number>;
+  public setFacultys!: HasManySetAssociationsMixin<Faculty, number>;
+
   public readonly Modules?: Module[];
   public readonly Mappings?: Mapping[];
   public readonly Links?: Link[];
   public readonly Semesters?: Semester[];
+  public readonly Faculties?: Faculty[];
   public readonly Country?: Country;
 
   public static associations: {
@@ -115,6 +129,7 @@ class University
     Country: Association<University, Country>;
     Links: Association<University, Link>;
     Semesters: Association<University, Semester>;
+    Faculties: Association<University, Faculty>;
   };
 }
 
