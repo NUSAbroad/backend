@@ -1,11 +1,11 @@
-import express from 'express';
-import { Request, Response, NextFunction } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { ValidationError } from 'sequelize';
 
 import { PORT } from './consts';
 import { handleError } from './errors/utils';
 import { NotFound, HttpError } from 'http-errors';
+import morganMiddleware from './middleware/morganMiddleware';
 
 import universities from './routes/universities';
 import mappings from './routes/mappings';
@@ -19,6 +19,7 @@ import faculties from './routes/faculties';
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(morganMiddleware);
 
 app.get('/', async (req: Request, res: Response) => {
   res.send('Hello World!');
