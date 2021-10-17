@@ -1,8 +1,10 @@
 import { ModuleCreationAttributes } from '../models/Module';
+import { FacultyCreationAttributes } from '../models/Faculty';
 import { Faculty } from '../models';
 import { ModuleFormattedInfo } from './modules';
 import { Transaction } from 'sequelize/types';
 import { BadRequest } from 'http-errors';
+import { PARTNER_UNIVERSITY_TYPE } from '../consts/faculty';
 
 type AcronymMapper = {
   [key: string]: string;
@@ -56,4 +58,30 @@ async function getFacultyIds(modulesInfo: ModuleFormattedInfo[], t: Transaction)
   );
 }
 
-export { getFacultyAcronym, getFacultyIds };
+async function createRelatedFaculties(faculties: string, universityId: number, t: Transaction) {
+  if (!faculties) return;
+
+  const facultiesArr = faculties.split(',');
+
+  const facultiesCreationAttribute: FacultyCreationAttributes[] = [];
+
+  facultiesArr.forEach((faculty: string) => {
+    if (faculty && faculty.trim()) {
+      const facultyCreationAttribute: FacultyCreationAttributes = {
+        name: faculty.trim(),
+        type: PARTNER_UNIVERSITY_TYPE,
+        universityId
+      };
+      facultiesCreationAttribute.push(facultyCreationAttribute);
+    }
+  });
+
+  const createdFaculties = await Faculty.bulkCreate(facultiesCreationAttribute, {
+    ignoreDuplicates: true,
+    transaction: t
+  });
+
+  return createdFaculties;
+}
+
+export { getFacultyAcronym, getFacultyIds, createRelatedFaculties };

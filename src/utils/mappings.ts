@@ -77,18 +77,18 @@ function createMappingInfo(data: MappingRow): MappingInfo {
   const partnerUniversityName = data['Partner University'];
 
   const puModule1: PUModule = {
-    partnerModuleName: data['NUS Module 1 Title'],
-    partnerModuleCode: data['NUS Module 1'],
+    partnerModuleName: data['PU Module 1 Title'],
+    partnerModuleCode: data['PU Module 1'],
     partnerModuleCredits: data['PU Mod1 Credits'],
     partnerUniversityName
   };
 
   puModules.push(puModule1);
 
-  if (data['NUS Module 2']) {
+  if (data['PU Module 2']) {
     const puModule2: PUModule = {
-      partnerModuleName: data['NUS Module 2 Title'],
-      partnerModuleCode: data['NUS Module 2'],
+      partnerModuleName: data['PU Module 2 Title'],
+      partnerModuleCode: data['PU Module 2'],
       partnerUniversityName,
       partnerModuleCredits: data['PU Mod2 Credits']
     };

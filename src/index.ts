@@ -5,6 +5,7 @@ import { ValidationError } from 'sequelize';
 import { PORT } from './consts';
 import { handleError } from './errors/utils';
 import { NotFound, HttpError } from 'http-errors';
+import morganMiddleware from './middleware/morganMiddleware';
 
 import universities from './routes/universities';
 import mappings from './routes/mappings';
@@ -13,7 +14,7 @@ import search from './routes/search';
 import countries from './routes/countries';
 import links from './routes/links';
 import semesters from './routes/semesters';
-import morganMiddleware from './middleware/morganMiddleware';
+import faculties from './routes/faculties';
 
 const app = express();
 app.use(cors());
@@ -31,6 +32,7 @@ app.use('/search', search);
 app.use('/countries', countries);
 app.use('/links', links);
 app.use('/semesters', semesters);
+app.use('/faculties', faculties);
 
 // Handle all resource not found
 app.all('*', (req: Request, res: Response) => {

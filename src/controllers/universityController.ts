@@ -17,6 +17,7 @@ import { Op, Transaction } from 'sequelize';
 import { NUSSLUG } from '../consts';
 import sequelize from '../database';
 import { CountryCreationAttributes } from '../models/Country';
+import { bulkCreateRelatedInfo } from '../utils/universities';
 
 function getAllUniversityInclude() {
   return [
@@ -31,6 +32,34 @@ function getAllUniversityInclude() {
     {
       association: University.associations.Semesters,
       attributes: ['description']
+    },
+    {
+      association: University.associations.Faculties,
+      attributes: ['name', 'type']
+    }
+  ];
+}
+
+function getUniversityInclude() {
+  return [
+    {
+      association: University.associations.Mappings
+    },
+    {
+      association: University.associations.Country,
+      attributes: ['name']
+    },
+    {
+      association: University.associations.Links,
+      attributes: ['name', 'link']
+    },
+    {
+      association: University.associations.Semesters,
+      attributes: ['description']
+    },
+    {
+      association: University.associations.Faculties,
+      attributes: ['name', 'type']
     }
   ];
 }
@@ -41,23 +70,7 @@ async function retrieveUniversity(req: Request, res: Response, next: NextFunctio
       where: {
         slug: req.params.slug
       },
-      include: [
-        {
-          association: University.associations.Mappings
-        },
-        {
-          association: University.associations.Country,
-          attributes: ['name']
-        },
-        {
-          association: University.associations.Links,
-          attributes: ['name', 'link']
-        },
-        {
-          association: University.associations.Semesters,
-          attributes: ['description']
-        }
-      ]
+      include: getUniversityInclude()
     });
     if (!university) throw new NotFound('No university with this slug!');
 
@@ -156,9 +169,22 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
       ignoreDuplicates: true
     });
 
+    await bulkCreateRelatedInfo(results, t);
+
     await t.commit();
 
-    res.status(201).json(universities);
+    const universitiesSlugs = universities.map((university: University) => {
+      return university.slug;
+    });
+
+    const universitiesWithRelatedInfo = await University.findAll({
+      where: {
+        slug: universitiesSlugs
+      },
+      include: getAllUniversityInclude()
+    });
+
+    res.status(201).json(universitiesWithRelatedInfo);
   } catch (err) {
     await t.rollback();
     next(err);
