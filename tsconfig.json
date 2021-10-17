@@ -13,6 +13,7 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "pretty": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
     "target": "es2018"
