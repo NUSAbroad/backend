@@ -3,6 +3,8 @@ import { Transaction } from 'sequelize/types';
 import { Semester } from '../models';
 
 async function createRelatedSemesters(semesters: string, universityId: number, t: Transaction) {
+  if (!semesters) return;
+
   const semestersArr = semesters.split(',');
 
   const semestersCreationAttribute: SemesterCreationAttributes[] = [];

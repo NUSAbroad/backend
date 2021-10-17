@@ -59,6 +59,8 @@ async function getFacultyIds(modulesInfo: ModuleFormattedInfo[], t: Transaction)
 }
 
 async function createRelatedFaculties(faculties: string, universityId: number, t: Transaction) {
+  if (!faculties) return;
+
   const facultiesArr = faculties.split(',');
 
   const facultiesCreationAttribute: FacultyCreationAttributes[] = [];
