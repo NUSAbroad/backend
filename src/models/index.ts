@@ -31,3 +31,4 @@ export { default as Country } from './Country';
 export { default as Link } from './Link';
 export { default as Semester } from './Semester';
 export { default as Faculty } from './Faculty';
+export { default as User } from './User';

@@ -14,7 +14,6 @@ interface ModuleFormattedInfo {
 }
 
 function formatModules(modulesInfo: ModuleInfo[], nusId: number) {
-  console.log(typeof modulesInfo);
   return modulesInfo.map((moduleInfo: ModuleInfo) => {
     const { moduleCode, title, moduleCredit, faculty } = moduleInfo;
 
