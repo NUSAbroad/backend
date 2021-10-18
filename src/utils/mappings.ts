@@ -129,19 +129,8 @@ async function generateMappings(mappingsInfo: MappingInfo[]) {
               partnerUniversityId: partnerUniversity.id
             };
 
-            const requiredFields = [
-              nusModule.nusModuleName,
-              nusModule.nusModuleCredits,
-              nusModule.nusModuleCode,
-              nusModule.nusModuleFaculty,
-              puModule.partnerModuleName,
-              puModule.partnerModuleCode,
-              puModule.partnerModuleCode,
-              partnerUniversity.id
-            ];
-
-            const allFieldsPresent = requiredFields.reduce(
-              (prev, curr) => Boolean(prev) && Boolean(curr),
+            const allFieldsPresent = Object.values(formattedMapping).reduce(
+              (prev, curr) => prev && Boolean(curr),
               true
             );
 
