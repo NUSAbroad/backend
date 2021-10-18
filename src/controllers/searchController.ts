@@ -14,28 +14,18 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
     if (!req.params.query) {
       const universities = await University.findAll({
         order: [['id', 'ASC']],
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
         where: {
           slug: {
             [Op.ne]: NUSSLUG
           }
         },
-        include: [
-          {
-            association: University.associations.Country,
-            attributes: ['name']
-          },
-          {
-            association: University.associations.Links,
-            attributes: ['name', 'link']
-          },
-          {
-            association: University.associations.Semesters,
-            attributes: ['description']
-          }
-        ]
+        include: getAllUniversityInclude()
       });
 
-      res.status(200).json(universities);
+      const result = await formatUniversities(universities);
+
+      res.status(200).json(result);
       return;
     }
 
