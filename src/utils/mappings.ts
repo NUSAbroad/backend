@@ -137,7 +137,7 @@ async function generateMappings(mappingsInfo: MappingInfo[]) {
             if (allFieldsPresent) {
               formattedMappings.push(formattedMapping);
             } else {
-              Logger.warn('Missing fields! Mapping not added');
+              Logger.warn('Missing fields! Mapping not added', formattedMapping);
             }
           });
         });
