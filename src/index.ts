@@ -6,6 +6,10 @@ import { PORT } from './consts';
 import { handleError } from './errors/utils';
 import { NotFound, HttpError } from 'http-errors';
 import morganMiddleware from './middleware/morganMiddleware';
+import swaggerUi from 'swagger-ui-express';
+import yaml from 'js-yaml';
+import fs from 'fs';
+import path from 'path';
 
 import universities from './routes/universities';
 import mappings from './routes/mappings';
@@ -18,6 +22,10 @@ import faculties from './routes/faculties';
 import users from './routes/users';
 
 const app = express();
+const swaggerDocument = yaml.load(
+  fs.readFileSync(path.resolve(__dirname, '../docs/swagger.yaml'), 'utf8')
+) as JSON;
+
 app.use(cors());
 app.use(express.json());
 app.use(morganMiddleware);
@@ -35,6 +43,8 @@ app.use('/links', links);
 app.use('/semesters', semesters);
 app.use('/faculties', faculties);
 app.use('/', users);
+
+app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Handle all resource not found
 app.all('*', (req: Request, res: Response) => {

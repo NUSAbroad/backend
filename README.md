@@ -16,6 +16,7 @@ Backend repository for NUSAbroad
   - [Documentation](#documentation)
     - [Database design](#database-design)
     - [Postman collection](#postman-collection)
+    - [API documentation](#api-documentation)
 
 ## Environment Set up
 
@@ -67,3 +68,6 @@ To update your local database with the latest schemas, run `npx sequelize-cli db
 ### Postman collection
 
 [Postman collection](/docs/NUSAbroad.postman_collection.json)
+
+### API documentation
+[API documentation](https://nusabroad-backend.herokuapp.com/api)

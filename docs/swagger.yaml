@@ -1,0 +1,121 @@
+openapi: '3.0.0'
+info:
+  description: 'This is the Swagger Documentation for NUSAbroad API'
+  version: '1.0.0'
+  title: 'NUSAbroad'
+tags:
+  - name: 'countries'
+    description: 'Calls to countries information'
+schemes:
+  - 'https'
+  - 'http'
+paths:
+  /countries:
+    get:
+      tags:
+        - 'countries'
+      summary: 'Get list of countries'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/Country'
+        '400':
+          description: 'Invalid status value'
+    post:
+      tags:
+        - 'countries'
+      summary: 'Add a country to NUSAbroad'
+      description: ''
+      operationId: 'addCountry'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Country object that needs to be added to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Country'
+      responses:
+        '400':
+          description: 'Invalid input'
+  /countries/{id}:
+    get:
+      tags:
+        - 'countries'
+      summary: 'Find country by id'
+      description: 'Returns a single country'
+      operationId: 'getcountryById'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of country to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/Country'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Country not found'
+    put:
+      tags:
+        - 'countries'
+      summary: 'Update an existing country'
+      description: ''
+      operationId: 'updateCountry'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of country to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Country object that needs to be updated to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Country'
+      responses:
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Country not found'
+    delete:
+      tags:
+        - 'countries'
+      summary: 'Deletes a country'
+      description: ''
+      operationId: 'deleteCountry'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'id of country to delete'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Country not found'
+definitions:
+  Country:
+    type: 'object'
+    required:
+      - 'name'
+    properties:
+      name:
+        type: 'string'
+        example: 'Singapore'
