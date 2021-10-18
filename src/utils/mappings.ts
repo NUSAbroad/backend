@@ -2,6 +2,8 @@ import { MappingCreationAttributes } from '../models/Mapping';
 import { Faculty, University } from '../models';
 import { getFacultyAcronym } from './faculties';
 import { BadRequest } from 'http-errors';
+import { loggers } from 'winston';
+import Logger from '../logger/logger';
 
 interface MappingRow {
   Faculty: string;
@@ -127,8 +129,27 @@ async function generateMappings(mappingsInfo: MappingInfo[]) {
               partnerUniversityId: partnerUniversity.id
             };
 
-            if (nusModule.nusModuleCredits && puModule.partnerModuleCredits)
+            const requiredFields = [
+              nusModule.nusModuleName,
+              nusModule.nusModuleCredits,
+              nusModule.nusModuleCode,
+              nusModule.nusModuleFaculty,
+              puModule.partnerModuleName,
+              puModule.partnerModuleCode,
+              puModule.partnerModuleCode,
+              partnerUniversity.id
+            ];
+
+            const allFieldsPresent = requiredFields.reduce(
+              (prev, curr) => Boolean(prev) && Boolean(curr),
+              true
+            );
+
+            if (allFieldsPresent) {
               formattedMappings.push(formattedMapping);
+            } else {
+              Logger.warn('Missing fields! Mapping not added');
+            }
           });
         });
       }
