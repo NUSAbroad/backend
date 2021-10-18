@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { ValidationError } from 'sequelize';
 
-import { PORT } from './consts';
+import { PORT, NODE_ENV } from './consts';
 import { handleError } from './errors/utils';
 import { NotFound, HttpError } from 'http-errors';
 import morganMiddleware from './middleware/morganMiddleware';
@@ -22,8 +22,10 @@ import faculties from './routes/faculties';
 import users from './routes/users';
 
 const app = express();
+
+const swaggerPath = NODE_ENV === 'development' ? '../docs/swagger.yaml' : '../../docs/swagger.yaml';
 const swaggerDocument = yaml.load(
-  fs.readFileSync(path.resolve(__dirname, '../docs/swagger.yaml'), 'utf8')
+  fs.readFileSync(path.resolve(__dirname, swaggerPath), 'utf8')
 ) as JSON;
 
 app.use(cors());
