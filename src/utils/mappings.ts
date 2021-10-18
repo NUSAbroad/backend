@@ -2,7 +2,7 @@ import { MappingCreationAttributes } from '../models/Mapping';
 import { Faculty, University } from '../models';
 import { getFacultyAcronym } from './faculties';
 import { BadRequest } from 'http-errors';
-import { loggers } from 'winston';
+
 import Logger from '../logger/logger';
 
 interface MappingRow {
