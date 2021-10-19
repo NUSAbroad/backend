@@ -8,7 +8,8 @@ import {
   formatUniversities,
   addSlugToUniversityRow,
   addCountryIds,
-  cleanUniversityRow
+  cleanUniversityRow,
+  formatUniversity
 } from '../utils/universities';
 import { parse } from 'fast-csv';
 import { UniversityCreationAttributes } from '../models/University';
@@ -97,7 +98,8 @@ async function indexUniversity(req: Request, res: Response, next: NextFunction) 
 
 async function showUniversity(req: Request, res: Response, next: NextFunction) {
   try {
-    res.status(200).json(req.university);
+    const university = await formatUniversity(req.university!);
+    res.status(200).json(university);
   } catch (err) {
     next(err);
   }
