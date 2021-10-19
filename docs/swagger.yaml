@@ -4,14 +4,49 @@ info:
   version: '1.0.0'
   title: 'NUSAbroad'
 tags:
+  - name: 'users'
+    description: 'Calls to users information'
   - name: 'countries'
     description: 'Calls to countries information'
   - name: 'universities'
     description: 'Calls to universities information'
+  - name: 'links'
+    description: 'Calls to links information'
+  - name: 'mappings'
+    description: 'Calls to mappings information'
+  - name: 'modules'
+    description: 'Calls to modules information'
 schemes:
   - 'https'
   - 'http'
 paths:
+  /login:
+    post:
+      tags:
+        - 'users'
+      summary: 'login'
+      description: ''
+      operationId: 'login'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'username and password that is used to validate user'
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: # <!--- form field name
+                  type: 'string'
+                password:
+                  type: 'string'
+            example:
+              email: nus@nus.edu
+              password: nus123
+      responses:
+        '200':
+          description: 'Success'
   /countries:
     get:
       tags:
@@ -121,16 +156,147 @@ paths:
       operationId: 'importUniversities'
       consumes:
         - 'multipart/form-data'
-      parameters:
-        - name: 'file'
-          in: 'formData'
-          description: 'file to upload'
-          type: 'file'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: file
+                  format: .csv'
+
       responses:
-        '200':
+        '201':
           description: 'successful operation'
           schema:
             $ref: '#/definitions/University'
+  /universities/reset:
+    post:
+      tags:
+        - 'universities'
+      summary: 'Clear all universities data in NUSAbroad'
+      description: ''
+      operationId: 'Reset universities'
+      consumes:
+        - 'application/json'
+      requestBody:
+      responses:
+        '200':
+          description: 'Success'
+  /mappings/import:
+    post:
+      tags:
+        - 'mappings'
+      summary: 'upload mappings information using .csv'
+      description: ''
+      operationId: 'importMappings'
+      consumes:
+        - 'multipart/form-data'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: file
+                  format: .csv'
+      responses:
+        '201':
+          description: 'Success'
+  /mappings/reset:
+    post:
+      tags:
+        - 'mappings'
+      summary: 'Clear all mappings data in NUSAbroad'
+      description: ''
+      operationId: 'resetMappings'
+      consumes:
+        - 'application/json'
+      requestBody:
+      responses:
+        '200':
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/Mapping'
+  /modules/populate:
+    post:
+      tags:
+        - 'modules'
+      summary: 'populate modules information using with the specified academic year'
+      description: ''
+      operationId: 'populateModules'
+      requestBody:
+        description: 'Populating modules with the modules of an academic year'
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                year: # <!--- form field name
+                  type: 'string'
+            example:
+              year: 2020-2021
+
+        example:
+      responses:
+        '200':
+          description: 'Success'
+  /modules/reset:
+    post:
+      tags:
+        - 'modules'
+      summary: 'Clear all modules data in NUSAbroad'
+      description: ''
+      operationId: 'resetModules'
+      consumes:
+        - 'application/json'
+      requestBody:
+      responses:
+        '200':
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/Mapping'
+  /links/scrape:
+    post:
+      tags:
+        - 'links'
+      summary: 'Retrieves links to infosheet of exchange universities'
+      description: ''
+      operationId: 'scrapeLinks'
+      requestBody:
+        description: 'Retrieves links to infosheet of exchange universities from GRO website'
+      responses:
+        '200':
+          description: 'Success'
+  /links/reset:
+    post:
+      tags:
+        - 'links'
+      summary: 'Clear all links in NUSAbroad'
+      description: ''
+      operationId: 'resetLinks'
+      consumes:
+        - 'application/json'
+      requestBody:
+      responses:
+        '200':
+          description: 'Success'
+
+security:
+  - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-auth-token
+
 definitions:
   Country:
     type: 'object'
@@ -152,3 +318,58 @@ definitions:
       countryId:
         type: 'integer'
         example: 1
+  Link:
+    type: 'object'
+    required:
+      - 'name'
+      - 'link'
+    properties:
+      name:
+        type: 'string'
+        example: 'University website'
+      link:
+        type: 'string'
+        example: 'https://www.nus.edu.sg/'
+      universityId:
+        type: 'integer'
+        example: 2
+  Mapping:
+    type: 'object'
+    required:
+      - 'nusModuleCode'
+      - 'nusModuleName'
+      - 'nusModultCredits'
+      - 'nusFacultyId'
+      - 'nusModuleFaculty'
+      - 'partnerModuleCode'
+      - 'partnerModuleName'
+      - 'partnerModuleCredits'
+      - 'parnterUniversityId'
+    properties:
+      nusFacultyId:
+        type: 'integer'
+        example: 1
+      nusModuleFaculty:
+        type: 'string'
+        example: 'SoC'
+      nusModuleCode:
+        type: 'string'
+        example: 'CS3216'
+      nusModuleName:
+        type: 'string'
+        example: 'Software Product Engineering for Digital Markets'
+      nusModuleCredits:
+        type: 'int'
+        example: '1'
+      partnerModuleCode:
+        type: 'string'
+        example: 'CS3216'
+      partnerModuleName:
+        type: 'string'
+        example: 'Software Product Engineering for Fun'
+      partnerModuleCredits:
+        type: 'float'
+        example: '1.0'
+      partnerUniversityId:
+        type: 'int'
+        example: '1'

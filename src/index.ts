@@ -6,7 +6,7 @@ import { PORT, NODE_ENV } from './consts';
 import { handleError } from './errors/utils';
 import { NotFound, HttpError } from 'http-errors';
 import morganMiddleware from './middleware/morganMiddleware';
-import swaggerUi from 'swagger-ui-express';
+import swaggerUi, { SwaggerUiOptions } from 'swagger-ui-express';
 import yaml from 'js-yaml';
 import fs from 'fs';
 import path from 'path';
@@ -28,6 +28,15 @@ const swaggerDocument = yaml.load(
   fs.readFileSync(path.resolve(__dirname, swaggerPath), 'utf8')
 ) as JSON;
 
+const swaggerOptions = {
+  swaggerOptions: {
+    // Turn off syntax highlight as large response payloads hang swagger ui
+    syntaxHighlight: {
+      activated: false
+    }
+  }
+} as SwaggerUiOptions;
+
 app.use(cors());
 app.use(express.json());
 app.use(morganMiddleware);
@@ -46,7 +55,7 @@ app.use('/semesters', semesters);
 app.use('/faculties', faculties);
 app.use('/', users);
 
-app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions));
 
 // Handle all resource not found
 app.all('*', (req: Request, res: Response) => {
