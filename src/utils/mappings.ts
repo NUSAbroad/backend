@@ -3,6 +3,8 @@ import { Faculty, University } from '../models';
 import { getFacultyAcronym } from './faculties';
 import { BadRequest } from 'http-errors';
 
+import Logger from '../logger/logger';
+
 interface MappingRow {
   Faculty: string;
   'Partner University': string;
@@ -127,8 +129,16 @@ async function generateMappings(mappingsInfo: MappingInfo[]) {
               partnerUniversityId: partnerUniversity.id
             };
 
-            if (nusModule.nusModuleCredits && puModule.partnerModuleCredits)
+            const allFieldsPresent = Object.values(formattedMapping).reduce(
+              (prev, curr) => prev && Boolean(curr),
+              true
+            );
+
+            if (allFieldsPresent) {
               formattedMappings.push(formattedMapping);
+            } else {
+              Logger.warn('Missing fields! Mapping not added', formattedMapping);
+            }
           });
         });
       }
