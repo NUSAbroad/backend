@@ -13,7 +13,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
   try {
     if (!req.params.query) {
       const universities = await University.findAll({
-        order: [['id', 'ASC']],
+        order: [['name', 'ASC']],
         attributes: { exclude: ['createdAt', 'updatedAt'] },
         where: {
           slug: {
