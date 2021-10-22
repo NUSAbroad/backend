@@ -16,6 +16,8 @@ tags:
     description: 'Calls to mappings information'
   - name: 'modules'
     description: 'Calls to modules information'
+  - name: 'search'
+    description: 'Calls to search routes'
 schemes:
   - 'https'
   - 'http'
@@ -286,7 +288,66 @@ paths:
       responses:
         '200':
           description: 'Success'
-
+  /search/general/{query}:
+    get:
+      tags:
+        - 'search'
+      summary: 'Search for university based on university name, module code or modulename'
+      description: 'Search results'
+      operationId: 'searchGeneral'
+      parameters:
+        - name: 'query'
+          in: 'path'
+          description: 'query to search'
+          type: 'string'
+      responses:
+        '200':
+          description: 'successful operation'
+  /search/faculty/{query}:
+    get:
+      tags:
+        - 'search'
+      summary: 'Search for faculty based on prefix given'
+      description: 'Search results for faculty based on prefix matching'
+      operationId: 'searchFaculty'
+      parameters:
+        - name: 'query'
+          in: 'path'
+          description: 'faculty to search'
+          type: 'string'
+      responses:
+        '200':
+          description: 'successful operation'
+  /search/moduleCode/{query}:
+    get:
+      tags:
+        - 'search'
+      summary: 'Search for module code based on prefix given'
+      description: 'Search results for module code based on prefix matching'
+      operationId: 'serachModuleCode'
+      parameters:
+        - name: 'query'
+          in: 'path'
+          description: 'Module code to search'
+          type: 'string'
+      responses:
+        '200':
+          description: 'successful operation'
+  /search/moduleName/{query}:
+    get:
+      tags:
+        - 'search'
+      summary: 'Search for module name based on prefix given'
+      description: 'Search results for module name based on prefix matching'
+      operationId: 'serachModulename'
+      parameters:
+        - name: 'query'
+          in: 'path'
+          description: 'Module name to search'
+          type: 'string'
+      responses:
+        '200':
+          description: 'successful operation'
 security:
   - ApiKeyAuth: []
 
