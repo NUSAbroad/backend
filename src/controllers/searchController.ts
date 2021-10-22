@@ -57,7 +57,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
       },
       attributes: { exclude: ['createdAt', 'updatedAt'] },
       include: getAllUniversityInclude(),
-      order: [['id', 'ASC']]
+      order: [['name', 'ASC']]
     });
 
     const result = await formatUniversities(searchResult);
