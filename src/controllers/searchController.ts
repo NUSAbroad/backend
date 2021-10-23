@@ -13,7 +13,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
   try {
     if (!req.params.query) {
       const universities = await University.findAll({
-        order: [['id', 'ASC']],
+        order: [['name', 'ASC']],
         attributes: { exclude: ['createdAt', 'updatedAt'] },
         where: {
           slug: {
@@ -57,7 +57,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
       },
       attributes: { exclude: ['createdAt', 'updatedAt'] },
       include: getAllUniversityInclude(),
-      order: [['id', 'ASC']]
+      order: [['name', 'ASC']]
     });
 
     const result = await formatUniversities(searchResult);

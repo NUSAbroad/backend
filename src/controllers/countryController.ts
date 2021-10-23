@@ -22,7 +22,7 @@ async function retrieveCountry(req: Request, res: Response, next: NextFunction) 
 async function indexCountry(req: Request, res: Response, next: NextFunction) {
   try {
     const countries = await Country.findAll({
-      order: [['id', 'ASC']],
+      order: [['name', 'ASC']],
       attributes: { exclude: ['createdAt', 'updatedAt'] }
     });
 
