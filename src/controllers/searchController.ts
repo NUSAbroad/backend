@@ -8,30 +8,13 @@ import { getAllUniversityInclude } from '../controllers/universityController';
 import { Faculty, Module } from '../models';
 import { NUS_TYPE } from '../consts/faculty';
 import { BadRequest } from 'http-errors';
+import { DEFAULT_EXPIRATION, redisClient } from '../database/redis';
 
 async function searchUniversities(req: Request, res: Response, next: NextFunction) {
   try {
-    if (!req.params.query) {
-      const universities = await University.findAll({
-        order: [['name', 'ASC']],
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
-        where: {
-          slug: {
-            [Op.ne]: NUSSLUG
-          }
-        },
-        include: getAllUniversityInclude()
-      });
-
-      const result = await formatUniversities(universities);
-
-      res.status(200).json(result);
-      return;
-    }
-
     const query = cleanInput(req.params.query);
 
-    const queryString = `SELECT *
+    const queryString = `SELECT "Universities"."id"
       FROM "Universities"
       WHERE (id IN (
         SELECT "partnerUniversityId"
@@ -43,17 +26,15 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
         WHERE _search @@ to_tsquery('english', '${query}:*')
       )) AND slug != '${NUSSLUG}'`;
 
-    const universities = await University.sequelize!.query(queryString, {
+    const universitiesIds = await University.sequelize!.query(queryString, {
       model: University,
       replacements: { query: query }
     });
 
-    const universitiesIds = universities.map(university => university.id);
-
-    // Added this because FE needs the associations, checked the search timing its still pretty fast ~200ms
+    // Let sequelize retrieve the associations
     const searchResult = await University.findAll({
       where: {
-        id: universitiesIds
+        id: universitiesIds.map(university => university.id)
       },
       attributes: { exclude: ['createdAt', 'updatedAt'] },
       include: getAllUniversityInclude(),
@@ -61,6 +42,39 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
     });
 
     const result = await formatUniversities(searchResult);
+
+    res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function searchAllUniversities(req: Request, res: Response, next: NextFunction) {
+  try {
+    const searchAllGeneralKey = '/search/general';
+
+    const cacheResult = await redisClient.get(searchAllGeneralKey);
+    console.log(req.originalUrl);
+    if (cacheResult) {
+      res.status(200).json(JSON.parse(cacheResult));
+      return;
+    }
+
+    const universities = await University.findAll({
+      order: [['name', 'ASC']],
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      where: {
+        slug: {
+          [Op.ne]: NUSSLUG
+        }
+      },
+      include: getAllUniversityInclude()
+    });
+
+    const result = await formatUniversities(universities);
+
+    await redisClient.set(searchAllGeneralKey, JSON.stringify(result));
+    await redisClient.setex(searchAllGeneralKey, DEFAULT_EXPIRATION, JSON.stringify(result));
 
     res.status(200).json(result);
   } catch (err) {
@@ -181,6 +195,7 @@ async function searchModuleCode(req: Request, res: Response, next: NextFunction)
 }
 
 export const searchFuncs = [searchUniversities];
+export const searchAllFuncs = [searchAllUniversities];
 export const searchFacultiesFuncs = [searchFaculties];
 export const searchModuleNameFuncs = [searchModuleNames];
 export const searchModuleCodeFuncs = [searchModuleCode];
