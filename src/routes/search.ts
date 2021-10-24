@@ -3,7 +3,7 @@ import * as searchController from '../controllers/searchController';
 
 const router = Router();
 
-router.get('/general', searchController.searchFuncs);
+router.get('/general', searchController.searchAllFuncs);
 router.get('/general/:query', searchController.searchFuncs);
 router.get('/faculty/', searchController.searchFacultiesFuncs);
 router.get('/faculty/:query', searchController.searchFacultiesFuncs);
