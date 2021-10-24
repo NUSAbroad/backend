@@ -31,7 +31,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
       replacements: { query: query }
     });
 
-    // Let sequelize retrieve the assiciations
+    // Let sequelize retrieve the associations
     const searchResult = await University.findAll({
       where: {
         id: universitiesIds.map(university => university.id)
@@ -51,8 +51,10 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
 
 async function searchAllUniversities(req: Request, res: Response, next: NextFunction) {
   try {
-    const cacheResult = await redisClient.get('/search/general');
+    const searchAllGeneralKey = '/search/general';
 
+    const cacheResult = await redisClient.get(searchAllGeneralKey);
+    console.log(req.originalUrl);
     if (cacheResult) {
       res.status(200).json(JSON.parse(cacheResult));
       return;
@@ -71,8 +73,8 @@ async function searchAllUniversities(req: Request, res: Response, next: NextFunc
 
     const result = await formatUniversities(universities);
 
-    await redisClient.set('/search/general', JSON.stringify(result));
-    await redisClient.setex('/search/general', DEFAULT_EXPIRATION, JSON.stringify(result));
+    await redisClient.set(searchAllGeneralKey, JSON.stringify(result));
+    await redisClient.setex(searchAllGeneralKey, DEFAULT_EXPIRATION, JSON.stringify(result));
 
     res.status(200).json(result);
   } catch (err) {
