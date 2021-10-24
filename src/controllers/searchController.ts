@@ -31,7 +31,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
       replacements: { query: query }
     });
 
-    // Added this because FE needs the associations, checked the search timing its still pretty fast ~200ms
+    // Let sequelize retrieve the assiciations
     const searchResult = await University.findAll({
       where: {
         id: universitiesIds.map(university => university.id)
