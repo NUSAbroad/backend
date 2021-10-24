@@ -9,35 +9,9 @@ import { Faculty, Module } from '../models';
 import { NUS_TYPE } from '../consts/faculty';
 import { BadRequest } from 'http-errors';
 import { DEFAULT_EXPIRATION, redisClient } from '../database/redis';
-import sequelize from '../database/index';
 
 async function searchUniversities(req: Request, res: Response, next: NextFunction) {
   try {
-    if (!req.params.query) {
-      const cacheResult = await redisClient.get('/search/general');
-
-      if (cacheResult) return res.status(200).json(JSON.parse(cacheResult));
-
-      const universities = await University.findAll({
-        order: [['name', 'ASC']],
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
-        where: {
-          slug: {
-            [Op.ne]: NUSSLUG
-          }
-        },
-        include: getAllUniversityInclude()
-      });
-
-      const result = await formatUniversities(universities);
-
-      //await redisClient.set('/search/general', JSON.stringify(result));
-      await redisClient.setex('/search/general', DEFAULT_EXPIRATION, JSON.stringify(result));
-
-      res.status(200).json(result);
-      return;
-    }
-
     const query = cleanInput(req.params.query);
 
     const queryString = `SELECT "Universities"."id"
@@ -45,11 +19,11 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
       WHERE (id IN (
         SELECT "partnerUniversityId"
         FROM "Mappings"
-        WHERE _search @@ to_tsquery('english', '${query}:*')
+        WHERE _search @@ to_tsquery('simple', '${query}:*')
       ) OR id IN (
         SELECT "id"
         FROM "Universities"
-        WHERE _search @@ to_tsquery('english', '${query}:*')
+        WHERE _search @@ to_tsquery('simple', '${query}:*')
       )) AND slug != '${NUSSLUG}'`;
 
     const universitiesIds = await University.sequelize!.query(queryString, {
@@ -68,6 +42,37 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
     });
 
     const result = await formatUniversities(searchResult);
+
+    res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function searchAllUniversities(req: Request, res: Response, next: NextFunction) {
+  try {
+    const cacheResult = await redisClient.get('/search/general');
+
+    if (cacheResult) {
+      res.status(200).json(JSON.parse(cacheResult));
+      return;
+    }
+
+    const universities = await University.findAll({
+      order: [['name', 'ASC']],
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      where: {
+        slug: {
+          [Op.ne]: NUSSLUG
+        }
+      },
+      include: getAllUniversityInclude()
+    });
+
+    const result = await formatUniversities(universities);
+
+    await redisClient.set('/search/general', JSON.stringify(result));
+    await redisClient.setex('/search/general', DEFAULT_EXPIRATION, JSON.stringify(result));
 
     res.status(200).json(result);
   } catch (err) {
@@ -188,6 +193,7 @@ async function searchModuleCode(req: Request, res: Response, next: NextFunction)
 }
 
 export const searchFuncs = [searchUniversities];
+export const searchAllFuncs = [searchAllUniversities];
 export const searchFacultiesFuncs = [searchFaculties];
 export const searchModuleNameFuncs = [searchModuleNames];
 export const searchModuleCodeFuncs = [searchModuleCode];
