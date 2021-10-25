@@ -5,9 +5,9 @@ const router = Router();
 
 router.get('/general', searchController.searchAllFuncs);
 router.get('/general/:query', searchController.searchFuncs);
-router.get('/faculty/', searchController.searchFacultiesFuncs);
+router.get('/faculty', searchController.searchAllFacultiesFuncs);
 router.get('/faculty/:query', searchController.searchFacultiesFuncs);
-router.get('/moduleName', searchController.searchModuleNameFuncs);
+router.get('/moduleName', searchController.searchAllModuleNameFuncs);
 router.get('/moduleName/:query', searchController.searchModuleNameFuncs);
 router.get('/moduleCode', searchController.searchModuleCodeFuncs);
 router.get('/moduleCode/:query', searchController.searchModuleCodeFuncs);

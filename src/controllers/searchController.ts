@@ -8,7 +8,74 @@ import { getAllUniversityInclude } from '../controllers/universityController';
 import { Faculty, Module } from '../models';
 import { NUS_TYPE } from '../consts/faculty';
 import { BadRequest } from 'http-errors';
-import { DEFAULT_EXPIRATION, redisClient } from '../database/redis';
+import { getOrSetCache } from '../utils/redis';
+
+async function fetchAllUniversities() {
+  const universities = await University.findAll({
+    order: [['name', 'ASC']],
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
+    where: {
+      slug: {
+        [Op.ne]: NUSSLUG
+      }
+    },
+    include: getAllUniversityInclude()
+  });
+
+  const result = await formatUniversities(universities);
+  return result;
+}
+
+async function fetchAllFaculties() {
+  const faculties = await Faculty.findAll({
+    order: [['name', 'ASC']],
+    where: {
+      type: NUS_TYPE
+    },
+    attributes: ['name']
+  });
+  return faculties;
+}
+
+async function fetchAllModuleNames() {
+  const nus = await University.findOne({
+    where: {
+      slug: NUSSLUG
+    }
+  });
+
+  if (!nus) new BadRequest('Unable to find NUS entry');
+
+  const modules = await Module.findAll({
+    order: [['name', 'ASC']],
+    where: {
+      universityId: nus!.id
+    },
+    attributes: ['name']
+  });
+
+  return modules;
+}
+
+async function fetchAllModuleCodes() {
+  const nus = await University.findOne({
+    where: {
+      slug: NUSSLUG
+    }
+  });
+
+  if (!nus) new BadRequest('Unable to find NUS entry');
+
+  const modules = await Module.findAll({
+    order: [['code', 'ASC']],
+    where: {
+      universityId: nus!.id
+    },
+    attributes: ['code']
+  });
+
+  return modules;
+}
 
 async function searchUniversities(req: Request, res: Response, next: NextFunction) {
   try {
@@ -51,32 +118,10 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
 
 async function searchAllUniversities(req: Request, res: Response, next: NextFunction) {
   try {
-    const searchAllGeneralKey = '/search/general';
+    const key = req.originalUrl; // Will be /search/general
+    const universities = await getOrSetCache(key, fetchAllUniversities);
 
-    const cacheResult = await redisClient.get(searchAllGeneralKey);
-    console.log(req.originalUrl);
-    if (cacheResult) {
-      res.status(200).json(JSON.parse(cacheResult));
-      return;
-    }
-
-    const universities = await University.findAll({
-      order: [['name', 'ASC']],
-      attributes: { exclude: ['createdAt', 'updatedAt'] },
-      where: {
-        slug: {
-          [Op.ne]: NUSSLUG
-        }
-      },
-      include: getAllUniversityInclude()
-    });
-
-    const result = await formatUniversities(universities);
-
-    await redisClient.set(searchAllGeneralKey, JSON.stringify(result));
-    await redisClient.setex(searchAllGeneralKey, DEFAULT_EXPIRATION, JSON.stringify(result));
-
-    res.status(200).json(result);
+    res.status(200).json(universities);
   } catch (err) {
     next(err);
   }
@@ -84,19 +129,6 @@ async function searchAllUniversities(req: Request, res: Response, next: NextFunc
 
 async function searchFaculties(req: Request, res: Response, next: NextFunction) {
   try {
-    if (!req.params.query) {
-      const faculties = await Faculty.findAll({
-        order: [['name', 'ASC']],
-        where: {
-          type: NUS_TYPE
-        },
-        attributes: ['name']
-      });
-
-      res.status(200).json(faculties);
-      return;
-    }
-
     const faculties = await Faculty.findAll({
       where: {
         type: NUS_TYPE,
@@ -114,6 +146,17 @@ async function searchFaculties(req: Request, res: Response, next: NextFunction) 
   }
 }
 
+async function searchAllFaculties(req: Request, res: Response, next: NextFunction) {
+  try {
+    const key = req.originalUrl; // Will be /search/faculty
+    const faculties = await getOrSetCache(key, fetchAllFaculties);
+
+    res.status(200).json(faculties);
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function searchModuleNames(req: Request, res: Response, next: NextFunction) {
   try {
     const nus = await University.findOne({
@@ -123,19 +166,6 @@ async function searchModuleNames(req: Request, res: Response, next: NextFunction
     });
 
     if (!nus) new BadRequest('Unable to find NUS entry');
-
-    if (!req.params.query) {
-      const modules = await Module.findAll({
-        order: [['name', 'ASC']],
-        where: {
-          universityId: nus!.id
-        },
-        attributes: ['name']
-      });
-
-      res.status(200).json(modules);
-      return;
-    }
 
     const modules = await Module.findAll({
       where: {
@@ -154,6 +184,17 @@ async function searchModuleNames(req: Request, res: Response, next: NextFunction
   }
 }
 
+async function searchAllModuleNames(req: Request, res: Response, next: NextFunction) {
+  try {
+    const key = req.originalUrl; // Will be /search/moduleName
+    const modules = await getOrSetCache(key, fetchAllModuleNames);
+
+    res.status(200).json(modules);
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function searchModuleCode(req: Request, res: Response, next: NextFunction) {
   try {
     const nus = await University.findOne({
@@ -163,19 +204,6 @@ async function searchModuleCode(req: Request, res: Response, next: NextFunction)
     });
 
     if (!nus) new BadRequest('Unable to find NUS entry');
-
-    if (!req.params.query) {
-      const modules = await Module.findAll({
-        order: [['code', 'ASC']],
-        where: {
-          universityId: nus!.id
-        },
-        attributes: ['code']
-      });
-
-      res.status(200).json(modules);
-      return;
-    }
 
     const modules = await Module.findAll({
       where: {
@@ -194,8 +222,22 @@ async function searchModuleCode(req: Request, res: Response, next: NextFunction)
   }
 }
 
+async function searchAllModuleCode(req: Request, res: Response, next: NextFunction) {
+  try {
+    const key = req.originalUrl; // Will be /search/moduleCode
+    const modules = await getOrSetCache(key, fetchAllModuleCodes);
+
+    res.status(200).json(modules);
+  } catch (err) {
+    next(err);
+  }
+}
+
 export const searchFuncs = [searchUniversities];
 export const searchAllFuncs = [searchAllUniversities];
 export const searchFacultiesFuncs = [searchFaculties];
+export const searchAllFacultiesFuncs = [searchAllFaculties];
 export const searchModuleNameFuncs = [searchModuleNames];
+export const searchAllModuleNameFuncs = [searchAllModuleNames];
 export const searchModuleCodeFuncs = [searchModuleCode];
+export const searchAllModuleCodeFuncs = [searchAllModuleCode];
