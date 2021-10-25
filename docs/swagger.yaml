@@ -81,6 +81,8 @@ paths:
             schema:
               $ref: '#/definitions/Country'
       responses:
+        '201':
+          description: 'successfull created country!'
         '400':
           description: 'Invalid input'
   /countries/{id}:
@@ -177,8 +179,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/definitions/Country'
+              $ref: '#/definitions/University'
       responses:
+        '201':
+          description: 'successfull created university!'
         '400':
           description: 'Invalid input'
   /universities/{id}:
@@ -199,7 +203,7 @@ paths:
         '200':
           description: 'successful operation'
           schema:
-            $ref: '#/definitions/Country'
+            $ref: '#/definitions/University'
         '400':
           description: 'Invalid ID supplied'
         '404':
@@ -225,7 +229,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/definitions/Country'
+              $ref: '#/definitions/University'
       responses:
         '400':
           description: 'Invalid ID supplied'
@@ -516,6 +520,12 @@ definitions:
       name:
         type: 'string'
         example: 'University of New South Wales'
+      state:
+        type: 'string'
+        example: 'London'
+      additionalInfo:
+        type: 'json'
+        example: "{ 'Estimated Costs': '$1000 a semester' }"
       countryId:
         type: 'integer'
         example: 1
