@@ -7,7 +7,6 @@ async function getOrSetCache(key: string, callback: Function) {
 
   const fetchedResult = await callback();
 
-  await redisClient.set(key, JSON.stringify(fetchedResult));
   await redisClient.setex(key, DEFAULT_EXPIRATION, JSON.stringify(fetchedResult));
 
   return fetchedResult;
