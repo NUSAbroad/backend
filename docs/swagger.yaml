@@ -6,18 +6,20 @@ info:
 tags:
   - name: 'users'
     description: 'Calls to users information'
-  - name: 'countries'
-    description: 'Calls to countries information'
   - name: 'universities'
     description: 'Calls to universities information'
-  - name: 'links'
-    description: 'Calls to links information'
   - name: 'mappings'
     description: 'Calls to mappings information'
+  - name: 'links'
+    description: 'Calls to links information'
   - name: 'modules'
     description: 'Calls to modules information'
   - name: 'search'
     description: 'Calls to search routes'
+  - name: 'countries'
+    description: 'Calls to countries information'
+  - name: 'faculties'
+    description: 'Calls to faculties information'
 schemes:
   - 'https'
   - 'http'
@@ -79,6 +81,8 @@ paths:
             schema:
               $ref: '#/definitions/Country'
       responses:
+        '201':
+          description: 'successfull created country!'
         '400':
           description: 'Invalid input'
   /countries/{id}:
@@ -127,6 +131,8 @@ paths:
             schema:
               $ref: '#/definitions/Country'
       responses:
+        '200':
+          description: 'successful operation'
         '400':
           description: 'Invalid ID supplied'
         '404':
@@ -145,10 +151,116 @@ paths:
           type: 'integer'
           format: 'int64'
       responses:
+      '200':
+        description: 'Successfully deleted'
         '400':
           description: 'Invalid ID supplied'
         '404':
           description: 'Country not found'
+  /universities:
+    get:
+      tags:
+        - 'universities'
+      summary: 'Get list of universities'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            type: 'array'
+        '400':
+          description: 'Invalid status value'
+    post:
+      tags:
+        - 'universities'
+      summary: 'Add a university to NUSAbroad'
+      description: ''
+      operationId: 'addUniversity'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'University object that needs to be added to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/University'
+      responses:
+        '201':
+          description: 'successfull created university!'
+        '400':
+          description: 'Invalid input'
+  /universities/{id}:
+    get:
+      tags:
+        - 'universities'
+      summary: 'Find university by id'
+      description: 'Returns a single university'
+      operationId: 'getUniversityById'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of university to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/University'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'University not found'
+    put:
+      tags:
+        - 'universities'
+      summary: 'Update an existing university'
+      description: ''
+      operationId: 'updateUniversity'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of university to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'University object that needs to be updated to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/University'
+      responses:
+        '200':
+          description: 'successful operation'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'University not found'
+    delete:
+      tags:
+        - 'universities'
+      summary: 'Deletes a university'
+      description: ''
+      operationId: 'deleteUniversity'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'id of university to delete'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'University not found'
   /universities/import:
     post:
       tags:
@@ -187,6 +299,110 @@ paths:
       responses:
         '200':
           description: 'Success'
+  /mappings:
+    get:
+      tags:
+        - 'mappings'
+      summary: 'Get list of mappings'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            type: 'array'
+        '400':
+          description: 'Invalid status value'
+    post:
+      tags:
+        - 'mappings'
+      summary: 'Add a mapping to NUSAbroad'
+      description: ''
+      operationId: 'addMapping'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Mapping object that needs to be added to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Mapping'
+      responses:
+        '201':
+          description: 'successfull created mapping!'
+        '400':
+          description: 'Invalid input'
+  /mappings/{id}:
+    get:
+      tags:
+        - 'mappings'
+      summary: 'Find university by id'
+      description: 'Returns a single mapping'
+      operationId: 'getMappingById'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of university to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/Mapping'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Mapping not found'
+    put:
+      tags:
+        - 'mappings'
+      summary: 'Update an existing mapping'
+      description: ''
+      operationId: 'updateMapping'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of university to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Mapping object that needs to be updated to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Mapping'
+      responses:
+        '200':
+          description: 'successful operation'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Mapping not found'
+    delete:
+      tags:
+        - 'mappings'
+      summary: 'Deletes a mapping'
+      description: ''
+      operationId: 'deleteMapping'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'id of university to delete'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Mapping not found'
   /mappings/import:
     post:
       tags:
@@ -224,6 +440,110 @@ paths:
           description: 'Success'
           schema:
             $ref: '#/definitions/Mapping'
+  /modules:
+    get:
+      tags:
+        - 'modules'
+      summary: 'Get list of modules'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            type: 'array'
+        '400':
+          description: 'Invalid status value'
+    post:
+      tags:
+        - 'modules'
+      summary: 'Add a module to NUSAbroad'
+      description: ''
+      operationId: 'addModule'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Module object that needs to be added to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Module'
+      responses:
+        '201':
+          description: 'successfull created module!'
+        '400':
+          description: 'Invalid input'
+  /modules/{id}:
+    get:
+      tags:
+        - 'modules'
+      summary: 'Find university by id'
+      description: 'Returns a single module'
+      operationId: 'getModuleById'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of university to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/Module'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Module not found'
+    put:
+      tags:
+        - 'modules'
+      summary: 'Update an existing module'
+      description: ''
+      operationId: 'updateModule'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of module to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Module object that needs to be updated to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Module'
+      responses:
+        '200':
+          description: 'successful operation'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Module not found'
+    delete:
+      tags:
+        - 'modules'
+      summary: 'Deletes a module'
+      description: ''
+      operationId: 'deleteModule'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'id of module to delete'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Module not found'
   /modules/populate:
     post:
       tags:
@@ -262,16 +582,120 @@ paths:
         '200':
           description: 'Success'
           schema:
-            $ref: '#/definitions/Mapping'
+            $ref: '#/definitions/Module'
+  /links:
+    get:
+      tags:
+        - 'links'
+      summary: 'Get list of links'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            type: 'array'
+        '400':
+          description: 'Invalid status value'
+    post:
+      tags:
+        - 'links'
+      summary: 'Add a link to NUSAbroad'
+      description: ''
+      operationId: 'addLink'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Link object that needs to be added to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Link'
+      responses:
+        '201':
+          description: 'successfull created link!'
+        '400':
+          description: 'Invalid input'
+  /links/{id}:
+    get:
+      tags:
+        - 'links'
+      summary: 'Find link by id'
+      description: 'Returns a single link'
+      operationId: 'getLinkById'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of link to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/Link'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Link not found'
+    put:
+      tags:
+        - 'links'
+      summary: 'Update an existing link'
+      description: ''
+      operationId: 'updateLink'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of link to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Link object that needs to be updated to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Link'
+      responses:
+        '200':
+          description: 'successful operation'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Link not found'
+    delete:
+      tags:
+        - 'links'
+      summary: 'Deletes a link'
+      description: ''
+      operationId: 'deleteLink'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'id of link to delete'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Link not found'
   /links/scrape:
     post:
       tags:
         - 'links'
-      summary: 'Retrieves links to infosheet of exchange universities'
+      summary: 'Retrieves links to infosheet of exchange mappings'
       description: ''
       operationId: 'scrapeLinks'
       requestBody:
-        description: 'Retrieves links to infosheet of exchange universities from GRO website'
+        description: 'Retrieves links to infosheet of exchange mappings from GRO website'
       responses:
         '200':
           description: 'Success'
@@ -288,6 +712,16 @@ paths:
       responses:
         '200':
           description: 'Success'
+  /search/general/:
+    get:
+      tags:
+        - 'search'
+      summary: 'Search for all universities'
+      description: 'Search all universities'
+      operationId: 'searchAllGeneral'
+      responses:
+        '200':
+          description: 'successful operation'
   /search/general/{query}:
     get:
       tags:
@@ -300,6 +734,16 @@ paths:
           in: 'path'
           description: 'query to search'
           type: 'string'
+      responses:
+        '200':
+          description: 'successful operation'
+  /search/faculty/:
+    get:
+      tags:
+        - 'search'
+      summary: 'Search for all faculties in NUS'
+      description: 'Search all faculties in NUS'
+      operationId: 'searchAllFaculties'
       responses:
         '200':
           description: 'successful operation'
@@ -318,6 +762,16 @@ paths:
       responses:
         '200':
           description: 'successful operation'
+  /search/moduleCode/:
+    get:
+      tags:
+        - 'search'
+      summary: 'Search for all module codes in NUS'
+      description: 'Search all modules codes in NUS'
+      operationId: 'searchAllModuleCodes'
+      responses:
+        '200':
+          description: 'successful operation'
   /search/moduleCode/{query}:
     get:
       tags:
@@ -330,6 +784,16 @@ paths:
           in: 'path'
           description: 'Module code to search'
           type: 'string'
+      responses:
+        '200':
+          description: 'successful operation'
+  /search/moduleName/:
+    get:
+      tags:
+        - 'search'
+      summary: 'Search for all module names in NUS'
+      description: 'Search all modules names in NUS'
+      operationId: 'searchAllModuleNames'
       responses:
         '200':
           description: 'successful operation'
@@ -348,6 +812,218 @@ paths:
       responses:
         '200':
           description: 'successful operation'
+  /faculties:
+    get:
+      tags:
+        - 'faculties'
+      summary: 'Get list of faculties'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/Faculty'
+        '400':
+          description: 'Invalid status value'
+    post:
+      tags:
+        - 'faculties'
+      summary: 'Add a country to NUSAbroad'
+      description: ''
+      operationId: 'addFaculty'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Faculty object that needs to be added to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Faculty'
+      responses:
+        '201':
+          description: 'successfull created country!'
+        '400':
+          description: 'Invalid input'
+  /faculties/{id}:
+    get:
+      tags:
+        - 'faculties'
+      summary: 'Find faculty by id'
+      description: 'Returns a single faculty'
+      operationId: 'getfacultyById'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of faculty to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/Faculty'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Faculty not found'
+    put:
+      tags:
+        - 'faculties'
+      summary: 'Update an existing faculty'
+      description: ''
+      operationId: 'updateFaculty'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of faculty to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Faculty object that needs to be updated to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Faculty'
+      responses:
+        '200':
+          description: 'successful operation'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Faculty not found'
+    delete:
+      tags:
+        - 'faculties'
+      summary: 'Deletes a faculty'
+      description: ''
+      operationId: 'deleteFaculty'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'id of faculty to delete'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Faculty not found'
+/semesters:
+  get:
+    tags:
+      - 'semesters'
+    summary: 'Get list of semesters'
+    responses:
+      '200':
+        description: 'successful operation'
+        schema:
+          type: 'array'
+          items:
+            $ref: '#/definitions/Semester'
+      '400':
+        description: 'Invalid status value'
+  post:
+    tags:
+      - 'semesters'
+    summary: 'Add a country to NUSAbroad'
+    description: ''
+    operationId: 'addSemester'
+    consumes:
+      - 'application/json'
+    requestBody:
+      description: 'Semester object that needs to be added to NUSAbroad'
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/definitions/Semester'
+    responses:
+      '201':
+        description: 'successfull created country!'
+      '400':
+        description: 'Invalid input'
+/semesters/{id}:
+  get:
+    tags:
+      - 'semesters'
+    summary: 'Find faculty by id'
+    description: 'Returns a single faculty'
+    operationId: 'getfacultyById'
+    parameters:
+      - name: 'id'
+        in: 'path'
+        description: 'ID of faculty to return'
+        required: true
+        type: 'integer'
+        format: 'int64'
+    responses:
+      '200':
+        description: 'successful operation'
+        schema:
+          $ref: '#/definitions/Semester'
+      '400':
+        description: 'Invalid ID supplied'
+      '404':
+        description: 'Semester not found'
+  put:
+    tags:
+      - 'semesters'
+    summary: 'Update an existing faculty'
+    description: ''
+    operationId: 'updateSemester'
+    parameters:
+      - name: 'id'
+        in: 'path'
+        description: 'ID of faculty to return'
+        required: true
+        type: 'integer'
+        format: 'int64'
+    consumes:
+      - 'application/json'
+    requestBody:
+      description: 'Semester object that needs to be updated to NUSAbroad'
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/definitions/Semester'
+    responses:
+      '200':
+        description: 'successful operation'
+      '400':
+        description: 'Invalid ID supplied'
+      '404':
+        description: 'Semester not found'
+  delete:
+    tags:
+      - 'semesters'
+    summary: 'Deletes a faculty'
+    description: ''
+    operationId: 'deleteSemester'
+    parameters:
+      - name: 'id'
+        in: 'path'
+        description: 'id of faculty to delete'
+        required: true
+        type: 'integer'
+        format: 'int64'
+    responses:
+      '200':
+        description: 'Successfully deleted'
+      '400':
+        description: 'Invalid ID supplied'
+      '404':
+        description: 'Semester not found'
 security:
   - ApiKeyAuth: []
 
@@ -367,6 +1043,34 @@ definitions:
       name:
         type: 'string'
         example: 'Singapore'
+  Semester:
+    type: 'object'
+    required:
+      - 'description'
+      - 'universityId'
+    properties:
+      name:
+        type: 'string'
+        example: 'Jan - May 2021'
+      universityId:
+        type: 'int'
+        example: 1
+  Faculty:
+    type: 'object'
+    required:
+      - 'name'
+      - 'type'
+      - 'universityId'
+    properties:
+      name:
+        type: 'string'
+        example: 'SoC'
+      type:
+        type: 'string'
+        example: 'PU'
+      universityId:
+        type: 'int'
+        example: 1
   University:
     type: 'object'
     required:
@@ -376,6 +1080,12 @@ definitions:
       name:
         type: 'string'
         example: 'University of New South Wales'
+      state:
+        type: 'string'
+        example: 'London'
+      additionalInfo:
+        type: 'json'
+        example: "{ 'Estimated Costs': '$1000 a semester' }"
       countryId:
         type: 'integer'
         example: 1
@@ -434,3 +1144,30 @@ definitions:
       partnerUniversityId:
         type: 'int'
         example: '1'
+  Module:
+    type: 'object'
+    required:
+      - 'code'
+      - 'name'
+      - 'credits'
+      - 'facultyId'
+      - 'universityId'
+    properties:
+      universityId:
+        type: 'integer'
+        example: 1
+      facultyId:
+        type: 'integer'
+        example: 1
+      faculty:
+        type: 'string'
+        example: 'SoC'
+      code:
+        type: 'string'
+        example: 'CS3216'
+      name:
+        type: 'string'
+        example: 'Software Product Engineering for Digital Markets'
+      credits:
+        type: 'int'
+        example: '4'
