@@ -10,6 +10,8 @@ import { NUS_TYPE } from '../consts/faculty';
 import { BadRequest } from 'http-errors';
 import { getOrSetCache } from '../utils/redis';
 
+const autofillAttributes = ['name', 'faculty', 'code'];
+
 async function fetchAllUniversities() {
   const universities = await University.findAll({
     order: [['name', 'ASC']],
@@ -51,7 +53,7 @@ async function fetchAllModuleNames() {
     where: {
       universityId: nus!.id
     },
-    attributes: ['name']
+    attributes: autofillAttributes
   });
 
   return modules;
@@ -71,7 +73,7 @@ async function fetchAllModuleCodes() {
     where: {
       universityId: nus!.id
     },
-    attributes: ['code']
+    attributes: autofillAttributes
   });
 
   return modules;
@@ -174,7 +176,7 @@ async function searchModuleNames(req: Request, res: Response, next: NextFunction
         },
         universityId: nus!.id
       },
-      attributes: ['name'],
+      attributes: autofillAttributes,
       order: [['name', 'ASC']]
     });
 
@@ -212,7 +214,7 @@ async function searchModuleCode(req: Request, res: Response, next: NextFunction)
         },
         universityId: nus!.id
       },
-      attributes: ['code'],
+      attributes: autofillAttributes,
       order: [['code', 'ASC']]
     });
 
