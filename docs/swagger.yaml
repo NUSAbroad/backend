@@ -306,7 +306,7 @@ paths:
     post:
       tags:
         - 'mappings'
-      summary: 'Add a university to NUSAbroad'
+      summary: 'Add a mapping to NUSAbroad'
       description: ''
       operationId: 'addMapping'
       consumes:
@@ -320,7 +320,7 @@ paths:
               $ref: '#/definitions/Mapping'
       responses:
         '201':
-          description: 'successfull created university!'
+          description: 'successfull created mapping!'
         '400':
           description: 'Invalid input'
   /mappings/{id}:
@@ -328,7 +328,7 @@ paths:
       tags:
         - 'mappings'
       summary: 'Find university by id'
-      description: 'Returns a single university'
+      description: 'Returns a single mapping'
       operationId: 'getMappingById'
       parameters:
         - name: 'id'
@@ -349,7 +349,7 @@ paths:
     put:
       tags:
         - 'mappings'
-      summary: 'Update an existing university'
+      summary: 'Update an existing mapping'
       description: ''
       operationId: 'updateMapping'
       parameters:
@@ -376,7 +376,7 @@ paths:
     delete:
       tags:
         - 'mappings'
-      summary: 'Deletes a university'
+      summary: 'Deletes a mapping'
       description: ''
       operationId: 'deleteMapping'
       parameters:
@@ -467,6 +467,106 @@ paths:
           description: 'Success'
           schema:
             $ref: '#/definitions/Mapping'
+  /links:
+    get:
+      tags:
+        - 'links'
+      summary: 'Get list of links'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            type: 'array'
+        '400':
+          description: 'Invalid status value'
+    post:
+      tags:
+        - 'links'
+      summary: 'Add a link to NUSAbroad'
+      description: ''
+      operationId: 'addLink'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Link object that needs to be added to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Link'
+      responses:
+        '201':
+          description: 'successfull created link!'
+        '400':
+          description: 'Invalid input'
+  /links/{id}:
+    get:
+      tags:
+        - 'links'
+      summary: 'Find link by id'
+      description: 'Returns a single link'
+      operationId: 'getLinkById'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of link to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/Link'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Link not found'
+    put:
+      tags:
+        - 'links'
+      summary: 'Update an existing link'
+      description: ''
+      operationId: 'updateLink'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of link to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Link object that needs to be updated to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Link'
+      responses:
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Link not found'
+    delete:
+      tags:
+        - 'links'
+      summary: 'Deletes a link'
+      description: ''
+      operationId: 'deleteLink'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'id of link to delete'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Link not found'
   /links/scrape:
     post:
       tags:
