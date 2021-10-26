@@ -6,20 +6,20 @@ info:
 tags:
   - name: 'users'
     description: 'Calls to users information'
-  - name: 'countries'
-    description: 'Calls to countries information'
   - name: 'universities'
     description: 'Calls to universities information'
-  - name: 'links'
-    description: 'Calls to links information'
   - name: 'mappings'
     description: 'Calls to mappings information'
+  - name: 'links'
+    description: 'Calls to links information'
   - name: 'modules'
     description: 'Calls to modules information'
-  - name: 'faculties'
-    description: 'Calls to faculties information'
   - name: 'search'
     description: 'Calls to search routes'
+  - name: 'countries'
+    description: 'Calls to countries information'
+  - name: 'faculties'
+    description: 'Calls to faculties information'
 schemes:
   - 'https'
   - 'http'
@@ -792,6 +792,108 @@ paths:
       responses:
         '200':
           description: 'successful operation'
+  /faculties:
+    get:
+      tags:
+        - 'faculties'
+      summary: 'Get list of faculties'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/Faculty'
+        '400':
+          description: 'Invalid status value'
+    post:
+      tags:
+        - 'faculties'
+      summary: 'Add a country to NUSAbroad'
+      description: ''
+      operationId: 'addFaculty'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Faculty object that needs to be added to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Faculty'
+      responses:
+        '201':
+          description: 'successfull created country!'
+        '400':
+          description: 'Invalid input'
+  /faculties/{id}:
+    get:
+      tags:
+        - 'faculties'
+      summary: 'Find faculty by id'
+      description: 'Returns a single faculty'
+      operationId: 'getfacultyById'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of faculty to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/Faculty'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Faculty not found'
+    put:
+      tags:
+        - 'faculties'
+      summary: 'Update an existing faculty'
+      description: ''
+      operationId: 'updateFaculty'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of faculty to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Faculty object that needs to be updated to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Faculty'
+      responses:
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Faculty not found'
+    delete:
+      tags:
+        - 'faculties'
+      summary: 'Deletes a faculty'
+      description: ''
+      operationId: 'deleteFaculty'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'id of faculty to delete'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Faculty not found'
 security:
   - ApiKeyAuth: []
 
@@ -811,6 +913,21 @@ definitions:
       name:
         type: 'string'
         example: 'Singapore'
+  Faculty:
+    type: 'object'
+    required:
+      - 'name'
+      - 'type'
+    properties:
+      name:
+        type: 'string'
+        example: 'SoC'
+      type:
+        type: 'string'
+        example: 'PU'
+      universityId:
+        type: 'int'
+        example: 1
   University:
     type: 'object'
     required:
