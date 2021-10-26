@@ -61,13 +61,5 @@ To update your local database with the latest schemas, run `npx sequelize-cli db
 
 ## Documentation
 
-### Database design
-
-[Database Schemas](https://dbdiagram.io/d/615eeb5d940c4c4eec8a1c1a)
-
-### Postman collection
-
-[Postman collection](/docs/NUSAbroad.postman_collection.json)
-
 ### API documentation
 [API documentation](https://nusabroad-backend.herokuapp.com/api)
