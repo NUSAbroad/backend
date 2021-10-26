@@ -20,6 +20,8 @@ tags:
     description: 'Calls to countries information'
   - name: 'faculties'
     description: 'Calls to faculties information'
+  - name: 'semesters'
+    description: 'Calls to semesters information'
 schemes:
   - 'https'
   - 'http'
