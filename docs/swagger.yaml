@@ -920,112 +920,113 @@ paths:
           description: 'Invalid ID supplied'
         '404':
           description: 'Faculty not found'
-/semesters:
-  get:
-    tags:
-      - 'semesters'
-    summary: 'Get list of semesters'
-    responses:
-      '200':
-        description: 'successful operation'
-        schema:
-          type: 'array'
-          items:
-            $ref: '#/definitions/Semester'
-      '400':
-        description: 'Invalid status value'
-  post:
-    tags:
-      - 'semesters'
-    summary: 'Add a country to NUSAbroad'
-    description: ''
-    operationId: 'addSemester'
-    consumes:
-      - 'application/json'
-    requestBody:
-      description: 'Semester object that needs to be added to NUSAbroad'
-      required: true
-      content:
-        application/json:
+  /semesters:
+    get:
+      tags:
+        - 'semesters'
+      summary: 'Get list of semesters'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/Semester'
+        '400':
+          description: 'Invalid status value'
+    post:
+      tags:
+        - 'semesters'
+      summary: 'Add a country to NUSAbroad'
+      description: ''
+      operationId: 'addSemester'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Semester object that needs to be added to NUSAbroad'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Semester'
+      responses:
+        '201':
+          description: 'successfull created country!'
+        '400':
+          description: 'Invalid input'
+  /semesters/{id}:
+    get:
+      tags:
+        - 'semesters'
+      summary: 'Find faculty by id'
+      description: 'Returns a single faculty'
+      operationId: 'getfacultyById'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of faculty to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'successful operation'
           schema:
             $ref: '#/definitions/Semester'
-    responses:
-      '201':
-        description: 'successfull created country!'
-      '400':
-        description: 'Invalid input'
-/semesters/{id}:
-  get:
-    tags:
-      - 'semesters'
-    summary: 'Find faculty by id'
-    description: 'Returns a single faculty'
-    operationId: 'getfacultyById'
-    parameters:
-      - name: 'id'
-        in: 'path'
-        description: 'ID of faculty to return'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Semester not found'
+    put:
+      tags:
+        - 'semesters'
+      summary: 'Update an existing faculty'
+      description: ''
+      operationId: 'updateSemester'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'ID of faculty to return'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      consumes:
+        - 'application/json'
+      requestBody:
+        description: 'Semester object that needs to be updated to NUSAbroad'
         required: true
-        type: 'integer'
-        format: 'int64'
-    responses:
-      '200':
-        description: 'successful operation'
-        schema:
-          $ref: '#/definitions/Semester'
-      '400':
-        description: 'Invalid ID supplied'
-      '404':
-        description: 'Semester not found'
-  put:
-    tags:
-      - 'semesters'
-    summary: 'Update an existing faculty'
-    description: ''
-    operationId: 'updateSemester'
-    parameters:
-      - name: 'id'
-        in: 'path'
-        description: 'ID of faculty to return'
-        required: true
-        type: 'integer'
-        format: 'int64'
-    consumes:
-      - 'application/json'
-    requestBody:
-      description: 'Semester object that needs to be updated to NUSAbroad'
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/definitions/Semester'
-    responses:
-      '200':
-        description: 'successful operation'
-      '400':
-        description: 'Invalid ID supplied'
-      '404':
-        description: 'Semester not found'
-  delete:
-    tags:
-      - 'semesters'
-    summary: 'Deletes a faculty'
-    description: ''
-    operationId: 'deleteSemester'
-    parameters:
-      - name: 'id'
-        in: 'path'
-        description: 'id of faculty to delete'
-        required: true
-        type: 'integer'
-        format: 'int64'
-    responses:
-      '200':
-        description: 'Successfully deleted'
-      '400':
-        description: 'Invalid ID supplied'
-      '404':
-        description: 'Semester not found'
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Semester'
+      responses:
+        '200':
+          description: 'successful operation'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Semester not found'
+    delete:
+      tags:
+        - 'semesters'
+      summary: 'Deletes a faculty'
+      description: ''
+      operationId: 'deleteSemester'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'id of faculty to delete'
+          required: true
+          type: 'integer'
+          format: 'int64'
+      responses:
+        '200':
+          description: 'Successfully deleted'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'Semester not found'
+
 security:
   - ApiKeyAuth: []
 
