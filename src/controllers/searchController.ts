@@ -83,11 +83,14 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
   try {
     const query = cleanInput(req.params.query);
 
-    const queryString = `(SELECT "id", ts_rank(_search, to_tsquery('english', '${query}:*')) AS rank
+    const universityRank = 2;
+    const moduleRank = 1;
+
+    const queryString = `(SELECT "id", ${universityRank} AS rank
         FROM "Universities"
         WHERE _search @@ to_tsquery('english', '${query}:*') AND slug != '${NUSSLUG}') 
         UNION 
-        (SELECT "partnerUniversityId" AS "id", ts_rank(_search, to_tsquery('english', '${query}:*')) AS rank
+        (SELECT "partnerUniversityId" AS "id", ${moduleRank} AS rank
         FROM "Mappings"
         WHERE _search @@ to_tsquery('english', '${query}:*'))
         ORDER BY rank DESC
