@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 import University from '../models/University';
 import { NUSSLUG } from '../consts';
 import { cleanInput } from '../utils/search';
-import { formatUniversities } from '../utils/universities';
+import { formatUniversities, addFoundIn } from '../utils/universities';
 import { getAllUniversityInclude } from '../controllers/universityController';
 import { Faculty, Module } from '../models';
 import { NUS_TYPE } from '../consts/faculty';
@@ -98,22 +98,24 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
 
     const universitiesIds = await University.sequelize!.query(queryString, {
       model: University,
-      replacements: { query: query }
+      replacements: { query: query },
+      raw: true
     });
 
     // Let sequelize retrieve the associations
-    const searchResult = await Promise.all(
-      universitiesIds.map(async university => {
-        const universityWithAssociations = await University.findByPk(university.id, {
+    // Do individual search to keep the order of ids in tact
+    const result = await Promise.all(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      universitiesIds.map(async (university: any) => {
+        const universityWithAssociation = await University.findByPk(university.id, {
           attributes: { exclude: ['createdAt', 'updatedAt'] },
           include: getAllUniversityInclude()
         });
 
-        return universityWithAssociations;
+        const foundIn = university.rank === 0 ? 'University' : 'Module Mapping';
+        return await addFoundIn(universityWithAssociation!, foundIn);
       })
     );
-
-    const result = await formatUniversities(searchResult as University[]);
 
     res.status(200).json(result);
   } catch (err) {

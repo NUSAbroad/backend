@@ -76,6 +76,16 @@ async function formatUniversity(university: University) {
   return formattedUniversity;
 }
 
+async function addFoundIn(university: University, foundIn: string) {
+  const formattedUniversity = await formatUniversity(university);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const rawFormattedUniversity: any = formattedUniversity;
+  rawFormattedUniversity['foundIn'] = foundIn;
+
+  return rawFormattedUniversity;
+}
+
 async function formatUniversities(universities: University[]) {
   const formattedUniversities = await Promise.all(
     universities.map(async (university: University) => {
@@ -137,5 +147,6 @@ export {
   addSlugToUniversityRow,
   addCountryIds,
   cleanUniversityRow,
-  bulkCreateRelatedInfo
+  bulkCreateRelatedInfo,
+  addFoundIn
 };
