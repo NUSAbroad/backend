@@ -83,7 +83,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
   try {
     const query = cleanInput(req.params.query);
 
-    const universityRank = 2;
+    const universityRank = 0;
     const moduleRank = 1;
 
     const queryString = `(SELECT "id", ${universityRank} AS rank
@@ -93,7 +93,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
         (SELECT "partnerUniversityId" AS "id", ${moduleRank} AS rank
         FROM "Mappings"
         WHERE _search @@ to_tsquery('english', '${query}:*'))
-        ORDER BY rank DESC
+        ORDER BY rank ASC
         `;
 
     const universitiesIds = await University.sequelize!.query(queryString, {
