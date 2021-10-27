@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 import University from '../models/University';
 import { NUSSLUG } from '../consts';
 import { cleanInput } from '../utils/search';
-import { formatUniversities } from '../utils/universities';
+import { formatUniversities, addFoundIn } from '../utils/universities';
 import { getAllUniversityInclude } from '../controllers/universityController';
 import { Faculty, Module } from '../models';
 import { NUS_TYPE } from '../consts/faculty';
@@ -83,34 +83,39 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
   try {
     const query = cleanInput(req.params.query);
 
-    const queryString = `SELECT "Universities"."id"
-      FROM "Universities"
-      WHERE (id IN (
-        SELECT "partnerUniversityId"
-        FROM "Mappings"
-        WHERE _search @@ to_tsquery('english', '${query}:*')
-      ) OR id IN (
-        SELECT "id"
+    const universityRank = 0;
+    const moduleRank = 1;
+
+    const queryString = `(SELECT "id", ${universityRank} AS rank
         FROM "Universities"
-        WHERE _search @@ to_tsquery('english', '${query}:*')
-      )) AND slug != '${NUSSLUG}'`;
+        WHERE _search @@ to_tsquery('english', '${query}:*') AND slug != '${NUSSLUG}') 
+        UNION 
+        (SELECT "partnerUniversityId" AS "id", ${moduleRank} AS rank
+        FROM "Mappings"
+        WHERE _search @@ to_tsquery('english', '${query}:*'))
+        ORDER BY rank ASC
+        `;
 
     const universitiesIds = await University.sequelize!.query(queryString, {
       model: University,
-      replacements: { query: query }
+      replacements: { query: query },
+      raw: true
     });
 
     // Let sequelize retrieve the associations
-    const searchResult = await University.findAll({
-      where: {
-        id: universitiesIds.map(university => university.id)
-      },
-      attributes: { exclude: ['createdAt', 'updatedAt'] },
-      include: getAllUniversityInclude(),
-      order: [['name', 'ASC']]
-    });
+    // Do individual search to keep the order of ids in tact
+    const result = await Promise.all(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      universitiesIds.map(async (university: any) => {
+        const universityWithAssociation = await University.findByPk(university.id, {
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          include: getAllUniversityInclude()
+        });
 
-    const result = await formatUniversities(searchResult);
+        const foundIn = university.rank === 0 ? 'University' : 'Module Mapping';
+        return await addFoundIn(universityWithAssociation!, foundIn);
+      })
+    );
 
     res.status(200).json(result);
   } catch (err) {

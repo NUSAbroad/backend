@@ -247,4 +247,4 @@ export const updateUniversityFuncs = [retrieveUniversity, updateUniversity];
 export const destroyUniversityFuncs = [retrieveUniversity, destroyUniversity];
 export const importUniversityFuncs = [csvUpload.single(UPLOAD_CSV_FORM_FIELD), importUniversity];
 export const resetUniversityFuncs = [resetUniversity];
-export { getAllUniversityInclude };
+export { getAllUniversityInclude, getUniversityInclude };
