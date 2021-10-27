@@ -4,7 +4,7 @@ import { Faculty } from '../models';
 import { ModuleFormattedInfo } from './modules';
 import { Transaction } from 'sequelize/types';
 import { BadRequest } from 'http-errors';
-import { PARTNER_UNIVERSITY_TYPE } from '../consts/faculty';
+import { NUS_TYPE, PARTNER_UNIVERSITY_TYPE } from '../consts/faculty';
 
 type AcronymMapper = {
   [key: string]: string;
@@ -23,8 +23,15 @@ const facultiesAcronym: AcronymMapper = {
   'Faculty of Engineering': 'FoE', // Edurec
   Science: 'FoS', // NUS Mods
   'Faculty of Science': 'FoS', // Edurec
-  NUS: 'NUS'
+  NUS: 'NUS',
+  Law: 'FoL'
 };
+
+const nusFaculties = new Set<String>();
+
+Object.values(facultiesAcronym).forEach((faculty: string) => {
+  nusFaculties.add(faculty);
+});
 
 function getFacultyAcronym(faculty: string) {
   if (facultiesAcronym[faculty.trim()]) return facultiesAcronym[faculty.trim()];
@@ -69,7 +76,7 @@ async function createRelatedFaculties(faculties: string, universityId: number, t
     if (faculty && faculty.trim()) {
       const facultyCreationAttribute: FacultyCreationAttributes = {
         name: faculty.trim(),
-        type: PARTNER_UNIVERSITY_TYPE,
+        type: nusFaculties.has(faculty) ? NUS_TYPE : PARTNER_UNIVERSITY_TYPE,
         universityId
       };
       facultiesCreationAttribute.push(facultyCreationAttribute);
@@ -84,4 +91,4 @@ async function createRelatedFaculties(faculties: string, universityId: number, t
   return createdFaculties;
 }
 
-export { getFacultyAcronym, getFacultyIds, createRelatedFaculties };
+export { getFacultyAcronym, getFacultyIds, createRelatedFaculties, nusFaculties };
