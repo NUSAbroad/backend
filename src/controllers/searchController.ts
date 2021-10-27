@@ -83,17 +83,15 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
   try {
     const query = cleanInput(req.params.query);
 
-    const queryString = `SELECT "Universities"."id"
-      FROM "Universities"
-      WHERE (id IN (
-        SELECT "partnerUniversityId"
-        FROM "Mappings"
-        WHERE _search @@ to_tsquery('english', '${query}:*')
-      ) OR id IN (
-        SELECT "id"
+    const queryString = `(SELECT "id", ts_rank(_search, to_tsquery('english', '${query}:*')) AS rank
         FROM "Universities"
-        WHERE _search @@ to_tsquery('english', '${query}:*')
-      )) AND slug != '${NUSSLUG}'`;
+        WHERE _search @@ to_tsquery('english', '${query}:*') AND slug != '${NUSSLUG}') 
+        UNION 
+        (SELECT "partnerUniversityId" AS "id", ts_rank(_search, to_tsquery('english', '${query}:*')) AS rank
+        FROM "Mappings"
+        WHERE _search @@ to_tsquery('english', '${query}:*'))
+        ORDER BY rank DESC
+        `;
 
     const universitiesIds = await University.sequelize!.query(queryString, {
       model: University,
@@ -101,16 +99,18 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
     });
 
     // Let sequelize retrieve the associations
-    const searchResult = await University.findAll({
-      where: {
-        id: universitiesIds.map(university => university.id)
-      },
-      attributes: { exclude: ['createdAt', 'updatedAt'] },
-      include: getAllUniversityInclude(),
-      order: [['name', 'ASC']]
-    });
+    const searchResult = await Promise.all(
+      universitiesIds.map(async university => {
+        const universityWithAssociations = await University.findByPk(university.id, {
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          include: getAllUniversityInclude()
+        });
 
-    const result = await formatUniversities(searchResult);
+        return universityWithAssociations;
+      })
+    );
+
+    const result = await formatUniversities(searchResult as University[]);
 
     res.status(200).json(result);
   } catch (err) {
