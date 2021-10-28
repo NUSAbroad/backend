@@ -76,7 +76,7 @@ async function formatUniversity(university: University) {
   return formattedUniversity;
 }
 
-async function addFoundIn(university: University, foundIn: string) {
+async function addFoundIn(university: University, foundIn: string[]) {
   const formattedUniversity = await formatUniversity(university);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

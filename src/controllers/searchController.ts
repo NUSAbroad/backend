@@ -10,11 +10,13 @@ import { NUS_TYPE } from '../consts/faculty';
 import { BadRequest } from 'http-errors';
 import { getOrSetCache } from '../utils/redis';
 
+const UNIVERSITY = 'University Name';
+const MAPPINGS = 'Module Mappings';
 const autofillAttributes = ['name', 'faculty', 'code'];
-const foundInTerms: { [key: number]: string } = {
-  3: 'University Name and Mappings',
-  2: 'University Name',
-  1: 'Module Mappings'
+const foundInTerms: { [key: number]: string[] } = {
+  3: [UNIVERSITY, MAPPINGS],
+  2: [UNIVERSITY],
+  1: [MAPPINGS]
 };
 
 async function fetchAllUniversities() {
@@ -111,11 +113,13 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
     });
 
     const universitiesIds = universitiesAndRanks.filter(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (universityWithRank: any) => universityWithRank.id && universityWithRank.rank
     );
     // Let sequelize retrieve the associations
     // Do individual search to keep the order of ids in tact
     const result = await Promise.all(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       universitiesIds.map(async (university: any) => {
         const universityWithAssociation = await University.findByPk(university.id, {
           attributes: { exclude: ['createdAt', 'updatedAt'] },
