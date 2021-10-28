@@ -14,8 +14,6 @@ Backend repository for NUSAbroad
     - [Linting, Formatting and CI Check](#linting-formatting-and-ci-check)
   - [Deployment](#deployment)
   - [Documentation](#documentation)
-    - [Database design](#database-design)
-    - [Postman collection](#postman-collection)
     - [API documentation](#api-documentation)
 
 ## Environment Set up
