@@ -94,7 +94,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
     const moduleRank = 1;
 
     const queryString = `
-        SELECT DISTINCT U.id, (COALESCE(U.rank,0) + COALESCE(M.rank,0)) as rank FROM
+        SELECT DISTINCT COALESCE(U.id, M.id) as id, (COALESCE(U.rank,0) + COALESCE(M.rank,0)) as rank FROM
         (SELECT "id", ${universityRank} AS rank
         FROM "Universities"
         WHERE _search @@ to_tsquery('english', '${query}:*') AND slug != '${NUSSLUG}') U
@@ -112,15 +112,11 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
       raw: true
     });
 
-    const universitiesIds = universitiesAndRanks.filter(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (universityWithRank: any) => universityWithRank.id && universityWithRank.rank
-    );
     // Let sequelize retrieve the associations
     // Do individual search to keep the order of ids in tact
     const result = await Promise.all(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      universitiesIds.map(async (university: any) => {
+      universitiesAndRanks.map(async (university: any) => {
         const universityWithAssociation = await University.findByPk(university.id, {
           attributes: { exclude: ['createdAt', 'updatedAt'] },
           include: getAllUniversityInclude()
