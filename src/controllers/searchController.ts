@@ -11,6 +11,11 @@ import { BadRequest } from 'http-errors';
 import { getOrSetCache } from '../utils/redis';
 
 const autofillAttributes = ['name', 'faculty', 'code'];
+const foundInTerms: { [key: number]: string } = {
+  3: 'University Name and Mappings',
+  2: 'University Name',
+  1: 'Module Mappings'
+};
 
 async function fetchAllUniversities() {
   const universities = await University.findAll({
@@ -83,36 +88,41 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
   try {
     const query = cleanInput(req.params.query);
 
-    const universityRank = 0;
-    const moduleRank = 1;
+    const universityRank = 1;
+    const moduleRank = 2;
 
-    const queryString = `(SELECT "id", ${universityRank} AS rank
+    const queryString = `
+        SELECT DISTINCT U.id, (COALESCE(U.rank,0) + COALESCE(M.rank,0)) as rank FROM
+        (SELECT "id", ${universityRank} AS rank
         FROM "Universities"
-        WHERE _search @@ to_tsquery('english', '${query}:*') AND slug != '${NUSSLUG}') 
-        UNION 
+        WHERE _search @@ to_tsquery('english', '${query}:*') AND slug != '${NUSSLUG}') U
+        FULL OUTER JOIN
         (SELECT "partnerUniversityId" AS "id", ${moduleRank} AS rank
         FROM "Mappings"
-        WHERE _search @@ to_tsquery('english', '${query}:*'))
-        ORDER BY rank ASC
+        WHERE _search @@ to_tsquery('english', '${query}:*')) M
+        ON U.id=M.id
+        ORDER BY rank DESC
         `;
 
-    const universitiesIds = await University.sequelize!.query(queryString, {
+    const universitiesAndRanks = await University.sequelize!.query(queryString, {
       model: University,
       replacements: { query: query },
       raw: true
     });
 
+    const universitiesIds = universitiesAndRanks.filter(
+      (universityWithRank: any) => universityWithRank.id && universityWithRank.rank
+    );
     // Let sequelize retrieve the associations
     // Do individual search to keep the order of ids in tact
     const result = await Promise.all(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       universitiesIds.map(async (university: any) => {
         const universityWithAssociation = await University.findByPk(university.id, {
           attributes: { exclude: ['createdAt', 'updatedAt'] },
           include: getAllUniversityInclude()
         });
 
-        const foundIn = university.rank === 0 ? 'University' : 'Module Mapping';
+        const foundIn = foundInTerms[university.rank];
         return await addFoundIn(universityWithAssociation!, foundIn);
       })
     );
