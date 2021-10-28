@@ -90,8 +90,8 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
   try {
     const query = cleanInput(req.params.query);
 
-    const universityRank = 1;
-    const moduleRank = 2;
+    const universityRank = 2;
+    const moduleRank = 1;
 
     const queryString = `
         SELECT DISTINCT U.id, (COALESCE(U.rank,0) + COALESCE(M.rank,0)) as rank FROM
