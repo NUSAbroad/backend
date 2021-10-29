@@ -13,6 +13,7 @@ const REDIS_URL = process.env.REDIS_URL || '';
 const NUS_MODS_MODULES_INFO_URL = 'https://api.nusmods.com/v2/';
 const NUS = 'National University of Singapore';
 const NUSSLUG = slug(NUS);
+const LINE_BREAK_REGEX = '/(\r\n|\n|\r)/gm';
 
 export {
   PORT,
@@ -22,5 +23,6 @@ export {
   NODE_ENV,
   SECRET_KEY,
   ON_AUTH,
-  REDIS_URL
+  REDIS_URL,
+  LINE_BREAK_REGEX
 };
