@@ -12,7 +12,7 @@ import { getOrSetCache } from '../utils/redis';
 
 const UNIVERSITY = 'University Name';
 const MAPPINGS = 'Module Mappings';
-const autofillAttributes = ['name', 'faculty', 'code'];
+const autofillAttributes = ['name', 'faculty', 'code', 'credits'];
 const foundInTerms: { [key: number]: string[] } = {
   3: [UNIVERSITY, MAPPINGS],
   2: [UNIVERSITY],
