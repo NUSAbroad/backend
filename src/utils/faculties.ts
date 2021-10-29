@@ -24,7 +24,8 @@ const facultiesAcronym: AcronymMapper = {
   Science: 'FoS', // NUS Mods
   'Faculty of Science': 'FoS', // Edurec
   NUS: 'NUS',
-  Law: 'FoL'
+  Law: 'FoL',
+  'University Scholars Programme': 'USP'
 };
 
 const nusFaculties = new Set<String>();
