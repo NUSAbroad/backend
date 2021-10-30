@@ -5,6 +5,7 @@ import { ModuleFormattedInfo } from './modules';
 import { Transaction } from 'sequelize/types';
 import { BadRequest } from 'http-errors';
 import { NUS_TYPE, PARTNER_UNIVERSITY_TYPE } from '../consts/faculty';
+import { LINE_BREAK_REGEX } from '../consts';
 
 type AcronymMapper = {
   [key: string]: string;
@@ -24,7 +25,8 @@ const facultiesAcronym: AcronymMapper = {
   Science: 'FoS', // NUS Mods
   'Faculty of Science': 'FoS', // Edurec
   NUS: 'NUS',
-  Law: 'FoL'
+  Law: 'FoL',
+  'University Scholars Programme': 'USP'
 };
 
 const nusFaculties = new Set<String>();
@@ -73,10 +75,12 @@ async function createRelatedFaculties(faculties: string, universityId: number, t
   const facultiesCreationAttribute: FacultyCreationAttributes[] = [];
 
   facultiesArr.forEach((faculty: string) => {
-    if (faculty && faculty.trim()) {
+    if (faculty && faculty.trim() && faculty.trim().replace(LINE_BREAK_REGEX, '')) {
       const facultyCreationAttribute: FacultyCreationAttributes = {
-        name: faculty.trim(),
-        type: nusFaculties.has(faculty) ? NUS_TYPE : PARTNER_UNIVERSITY_TYPE,
+        name: faculty.trim().replace(LINE_BREAK_REGEX, ''),
+        type: nusFaculties.has(faculty.trim().replace(LINE_BREAK_REGEX, ''))
+          ? NUS_TYPE
+          : PARTNER_UNIVERSITY_TYPE,
         universityId
       };
       facultiesCreationAttribute.push(facultyCreationAttribute);
