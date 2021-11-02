@@ -19,6 +19,8 @@ import { NUSSLUG } from '../consts';
 import sequelize from '../database';
 import { CountryCreationAttributes } from '../models/Country';
 import { bulkCreateRelatedInfo } from '../utils/universities';
+import { redisClient } from '../database/redis';
+import { SEARCH_GENERAL_KEY } from '../consts/redis';
 
 function getAllUniversityInclude() {
   return [
@@ -185,6 +187,8 @@ async function importUniversity(req: Request, res: Response, next: NextFunction)
       },
       include: getAllUniversityInclude()
     });
+
+    await redisClient.del(SEARCH_GENERAL_KEY);
 
     res.status(201).json(universitiesWithRelatedInfo);
   } catch (err) {

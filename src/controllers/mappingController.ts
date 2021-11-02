@@ -5,6 +5,7 @@ import { MappingCreationAttributes } from '../models/Mapping';
 import { csvUpload, UPLOAD_CSV_FORM_FIELD } from '../consts/upload';
 import { createMappingInfo, generateMappings, MappingInfo, MappingRow } from '../utils/mappings';
 import { parse } from 'fast-csv';
+import { SEARCH_GENERAL_KEY } from '../consts/redis';
 
 async function retrieveMapping(req: Request, res: Response, next: NextFunction) {
   try {
@@ -86,6 +87,9 @@ async function importMapping(req: Request, res: Response, next: NextFunction) {
     const mappings: Mapping[] = await Mapping.bulkCreate(mappingAttributes, {
       ignoreDuplicates: true
     });
+
+    await redisClient.del(SEARCH_GENERAL_KEY);
+
     res.status(201).json(mappings);
   } catch (err) {
     next(err);
