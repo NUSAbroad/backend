@@ -6,6 +6,7 @@ import { csvUpload, UPLOAD_CSV_FORM_FIELD } from '../consts/upload';
 import { createMappingInfo, generateMappings, MappingInfo, MappingRow } from '../utils/mappings';
 import { parse } from 'fast-csv';
 import { SEARCH_GENERAL_KEY } from '../consts/redis';
+import { redisClient } from '../database/redis';
 
 async function retrieveMapping(req: Request, res: Response, next: NextFunction) {
   try {

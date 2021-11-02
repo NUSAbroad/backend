@@ -3,6 +3,8 @@ import { Link } from '../models';
 import { NotFound } from 'http-errors';
 import { scrapeData } from '../utils/links';
 import { LinkCreationAttributes } from '../models/Link';
+import { redisClient } from '../database/redis';
+import { SEARCH_GENERAL_KEY } from '../consts/redis';
 
 async function retrieveLink(req: Request, res: Response, next: NextFunction) {
   try {
@@ -84,6 +86,8 @@ async function scrapePDFLinks(req: Request, res: Response, next: NextFunction) {
     const links = await Link.bulkCreate(linkCreationAttributes, {
       ignoreDuplicates: true
     });
+
+    await redisClient.del(SEARCH_GENERAL_KEY);
 
     res.status(200).json(links);
   } catch (err) {
