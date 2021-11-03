@@ -9,6 +9,12 @@ import { Faculty, Module } from '../models';
 import { NUS_TYPE } from '../consts/faculty';
 import { BadRequest } from 'http-errors';
 import { getOrSetCache } from '../utils/redis';
+import {
+  SEARCH_FACULTY_KEY,
+  SEARCH_GENERAL_KEY,
+  SEARCH_MODULE_CODE,
+  SEARCH_MODULE_NAME
+} from '../consts/redis';
 
 const UNIVERSITY = 'University Name';
 const MAPPINGS = 'Module Mappings';
@@ -135,8 +141,7 @@ async function searchUniversities(req: Request, res: Response, next: NextFunctio
 
 async function searchAllUniversities(req: Request, res: Response, next: NextFunction) {
   try {
-    const key = req.originalUrl; // Will be /search/general
-    const universities = await getOrSetCache(key, fetchAllUniversities);
+    const universities = await getOrSetCache(SEARCH_GENERAL_KEY, fetchAllUniversities);
 
     res.status(200).json(universities);
   } catch (err) {
@@ -165,8 +170,7 @@ async function searchFaculties(req: Request, res: Response, next: NextFunction) 
 
 async function searchAllFaculties(req: Request, res: Response, next: NextFunction) {
   try {
-    const key = req.originalUrl; // Will be /search/faculty
-    const faculties = await getOrSetCache(key, fetchAllFaculties);
+    const faculties = await getOrSetCache(SEARCH_FACULTY_KEY, fetchAllFaculties);
 
     res.status(200).json(faculties);
   } catch (err) {
@@ -203,8 +207,7 @@ async function searchModuleNames(req: Request, res: Response, next: NextFunction
 
 async function searchAllModuleNames(req: Request, res: Response, next: NextFunction) {
   try {
-    const key = req.originalUrl; // Will be /search/moduleName
-    const modules = await getOrSetCache(key, fetchAllModuleNames);
+    const modules = await getOrSetCache(SEARCH_MODULE_NAME, fetchAllModuleNames);
 
     res.status(200).json(modules);
   } catch (err) {
@@ -241,8 +244,7 @@ async function searchModuleCode(req: Request, res: Response, next: NextFunction)
 
 async function searchAllModuleCode(req: Request, res: Response, next: NextFunction) {
   try {
-    const key = req.originalUrl; // Will be /search/moduleCode
-    const modules = await getOrSetCache(key, fetchAllModuleCodes);
+    const modules = await getOrSetCache(SEARCH_MODULE_CODE, fetchAllModuleCodes);
 
     res.status(200).json(modules);
   } catch (err) {
